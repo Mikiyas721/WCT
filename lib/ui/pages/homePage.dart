@@ -1,4 +1,4 @@
-import 'package:convex_bottom_bar/convex_bottom_bar.dart';
+import 'package:fab_circular_menu/fab_circular_menu.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget {
@@ -20,27 +20,25 @@ class HomePage extends StatelessWidget {
         ),
         body: TabBarView(children: [
           Icon(
-            Icons.local_drink,
+            Icons.local_drink,size: 70,
             semanticLabel: 'Water',
           ),
           Icon(
-            Icons.fastfood,
+            Icons.fastfood,size: 70,
             semanticLabel: 'Food',
           )
         ]),
-        bottomNavigationBar: ConvexAppBar(
-          items: <TabItem>[
-            TabItem(icon: Icon(Icons.brush), title: "Theme"),
-            TabItem(icon: Icon(Icons.settings), title: "Settings"),
-            TabItem(icon: Icon(Icons.volume_down), title: "Sound")
-          ],
-          initialActiveIndex: 1,
-          onTap: (int tabIndex) {
-            if (tabIndex == 0) {
-            } else if (tabIndex == 1) {
+        floatingActionButton: FabCircularMenu(
+          children: [
+            IconButton(icon: Icon(Icons.brush), onPressed: () {}),
+            IconButton(icon: Icon(Icons.settings), onPressed: () {
               Navigator.pushNamed(context, '/settingsPage');
-            } else if (tabIndex == 2) {}
-          },
+            }),
+            IconButton(icon: Icon(Icons.volume_up), onPressed: () {})
+          ],
+          ringWidth: 55,
+          ringDiameter: 250,
+          fabOpenColor: Colors.redAccent,
         ),
       ),
     );
