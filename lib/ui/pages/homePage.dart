@@ -1,5 +1,5 @@
+import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:wct/ui/customWidgets/myFloatingActionButton.dart';
 
 class HomePage extends StatelessWidget {
   @override
@@ -9,7 +9,20 @@ class HomePage extends StatelessWidget {
         title: Text('WNT'),
       ),
       body: null,
-      floatingActionButton: FancyFab(),
+      bottomNavigationBar: ConvexAppBar(
+        items: <TabItem>[
+          TabItem(icon: Icon(Icons.brush), title: "Theme"),
+          TabItem(icon: Icon(Icons.settings), title: "Settings"),
+          TabItem(icon: Icon(Icons.volume_down), title: "Sound")
+        ],
+        initialActiveIndex: 1,
+        onTap: (int tabIndex) {
+          if (tabIndex == 0)
+            Navigator.pushNamed(context, '/settingsPage');
+          else if (tabIndex == 1) {
+          } else if (tabIndex == 2) {}
+        },
+      ),
     );
   }
 }
