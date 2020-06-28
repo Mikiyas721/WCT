@@ -1,5 +1,7 @@
 import 'package:fab_circular_menu/fab_circular_menu.dart';
 import 'package:flutter/material.dart';
+import 'package:wct/bloc/provider/provider.dart';
+import 'package:wct/bloc/themeBloc.dart';
 
 class HomePage extends StatelessWidget {
   @override
@@ -20,20 +22,32 @@ class HomePage extends StatelessWidget {
         ),
         body: TabBarView(children: [
           Icon(
-            Icons.local_drink,size: 70,
+            Icons.local_drink,
+            size: 70,
             semanticLabel: 'Water',
           ),
           Icon(
-            Icons.fastfood,size: 70,
+            Icons.fastfood,
+            size: 70,
             semanticLabel: 'Food',
           )
         ]),
         floatingActionButton: FabCircularMenu(
           children: [
-            IconButton(icon: Icon(Icons.brush), onPressed: () {}),
-            IconButton(icon: Icon(Icons.settings), onPressed: () {
-              Navigator.pushNamed(context, '/settingsPage');
-            }),
+            BlocProvider<ThemeBloc>(
+                blocFactory: () => ThemeBloc(),
+                builder: (BuildContext context, ThemeBloc bloc) {
+                  return IconButton(
+                      icon: Icon(Icons.brush),
+                      onPressed: () {
+                        bloc.nextTheme();
+                      });
+                }),
+            IconButton(
+                icon: Icon(Icons.settings),
+                onPressed: () {
+                  Navigator.pushNamed(context, '/settingsPage');
+                }),
             IconButton(icon: Icon(Icons.volume_up), onPressed: () {})
           ],
           ringWidth: 55,

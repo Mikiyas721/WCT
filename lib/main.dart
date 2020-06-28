@@ -1,14 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:wct/ui/pages/conditionsPage.dart';
-import 'package:wct/ui/pages/homePage.dart';
-import 'package:wct/ui/pages/notificationPage.dart';
-import 'package:wct/ui/pages/settingsPage.dart';
-import 'package:wct/ui/pages/themePage.dart';
-import 'package:wct/ui/pages/timePage.dart';
+import 'package:get_it/get_it.dart';
+import 'package:wct/resources/myThemeData.dart';
+import './injector.dart';
+import './ui/pages/conditionsPage.dart';
+import './ui/pages/homePage.dart';
+import './ui/pages/notificationPage.dart';
+import './ui/pages/settingsPage.dart';
+import './ui/pages/themePage.dart';
+import './ui/pages/timePage.dart';
 
-void main() => runApp(MyApp());
+import 'dataSource/themeDataSource.dart';
+
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await inject();
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
+  final themeRepo = GetIt.instance.get<ThemeRepo>();
   final routes = {
     '/': (BuildContext context) => HomePage(),
     '/settingsPage': (BuildContext context) => SettingsPage(),
@@ -20,10 +30,17 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Water and Calorie Tracker',
-      routes: routes,
-      initialRoute: '/',
+    return StreamBuilder(
+      stream: themeRepo.themeDataStream,
+      builder: (BuildContext context, AsyncSnapshot<ThemeData> snapshot) {
+        return MaterialApp(
+            title: 'Water and Calorie Tracker',
+            routes: routes,
+            initialRoute: '/',
+            theme: snapshot.data == null
+                ? MyThemeData.defaultLight
+                : snapshot.data);
+      },
     );
   }
 }

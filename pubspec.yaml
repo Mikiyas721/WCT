@@ -25,6 +25,17 @@ dependencies:
   cupertino_icons: ^0.1.2
   fab_circular_menu: ^1.0.0
   shifting_tabbar: ^0.3.1
+  dio: ^3.0.9
+  dio_http_cache: ^0.2.6
+  get_it: ^4.0.2
+  equatable: ^1.0.2
+  timeago: ^2.0.26
+  date_format: ^1.0.8
+  validators: ^2.0.0+1
+  shared_preferences: ^0.5.7+2
+  rxdart: ^0.24.1
+  toast: ^0.1.5
+  draggable_scrollbar: ^0.0.4
 
 dev_dependencies:
   flutter_test:
