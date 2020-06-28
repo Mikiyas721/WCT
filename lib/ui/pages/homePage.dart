@@ -1,7 +1,7 @@
 import 'package:fab_circular_menu/fab_circular_menu.dart';
 import 'package:flutter/material.dart';
-import 'package:wct/bloc/provider/provider.dart';
-import 'package:wct/bloc/themeBloc.dart';
+import '../../bloc/provider/provider.dart';
+import '../../bloc/themeBloc.dart';
 
 class HomePage extends StatelessWidget {
   @override
@@ -10,7 +10,7 @@ class HomePage extends StatelessWidget {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Water and Nutrition Tracker'),
+          title: Text('Nutrition Tracker'),
           bottom: TabBar(tabs: [
             Tab(
               icon: Icon(Icons.local_drink),

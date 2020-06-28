@@ -1,5 +1,5 @@
-name: wct
-description: Water and Calorie tracker
+name: Nutracker
+description: Nutrition tracker
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -36,6 +36,7 @@ dependencies:
   rxdart: ^0.24.1
   toast: ^0.1.5
   draggable_scrollbar: ^0.0.4
+  convex_bottom_bar: ^2.2.2
 
 dev_dependencies:
   flutter_test:

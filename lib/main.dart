@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:wct/resources/myThemeData.dart';
+import './models/theme.dart';
+import './resources/preferenceKeys.dart';
+import './resources/myThemeData.dart';
 import './injector.dart';
 import './ui/pages/conditionsPage.dart';
 import './ui/pages/homePage.dart';
 import './ui/pages/notificationPage.dart';
-import './ui/pages/settingsPage.dart';
+import 'ui/pages/settings/settingsPage.dart';
 import './ui/pages/themePage.dart';
-import './ui/pages/timePage.dart';
-
 import 'dataSource/themeDataSource.dart';
+import 'models/theme.dart';
+import 'resources/preferenceKeys.dart';
 
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await inject();
   runApp(MyApp());
@@ -25,16 +27,18 @@ class MyApp extends StatelessWidget {
     '/notificationPage': (BuildContext context) => NotificationPage(),
     '/conditionsPage': (BuildContext context) => ConditionsPage(),
     '/themePage': (BuildContext context) => ThemePage(),
-    '/timePage': (BuildContext context) => TimePage(),
   };
 
   @override
   Widget build(BuildContext context) {
+    String savedTheme =
+        themeRepo.getPreference<String>(PreferenceKeys.selectedTheme);
+    themeRepo.updateStream(ThemeModel(name: savedTheme));
     return StreamBuilder(
       stream: themeRepo.themeDataStream,
       builder: (BuildContext context, AsyncSnapshot<ThemeData> snapshot) {
         return MaterialApp(
-            title: 'Water and Calorie Tracker',
+            title: 'Nutrition Tracker',
             routes: routes,
             initialRoute: '/',
             theme: snapshot.data == null

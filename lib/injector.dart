@@ -1,8 +1,8 @@
 import 'package:get_it/get_it.dart';
 import 'package:rxdart/subjects.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:wct/dataSource/themeDataSource.dart';
-import 'package:wct/models/theme.dart';
+import './dataSource/themeDataSource.dart';
+import './models/theme.dart';
 
 void inject() async {
   final preference = await SharedPreferences.getInstance();
