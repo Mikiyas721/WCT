@@ -1,4 +1,4 @@
-import '../../../customWidgets/foodCard.dart';
+import '../../customWidgets/foodCard.dart';
 import 'package:flutter/material.dart';
 
 class FruitListTab extends StatelessWidget {

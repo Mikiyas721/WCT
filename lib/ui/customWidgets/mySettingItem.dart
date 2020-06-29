@@ -3,14 +3,20 @@ import 'package:flutter/material.dart';
 class MySettingItem extends StatelessWidget {
   final IconData leadingIcon;
   final String title;
-  final Function onTap;
+  final void Function() onTap;
+  final bool enabled;
 
-  MySettingItem(
-      {@required this.leadingIcon, @required this.title, @required this.onTap});
+  MySettingItem({
+    @required this.title,
+    @required this.leadingIcon,
+    this.onTap,
+    this.enabled = true,
+  });
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      enabled: enabled,
       leading: Icon(
         leadingIcon,
       ),

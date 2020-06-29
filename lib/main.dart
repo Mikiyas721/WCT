@@ -1,4 +1,4 @@
-import 'package:Nutracker/ui/pages/settings/food/foodListPage.dart';
+import 'package:Nutracker/ui/pages/foodInfo/foodListPage.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import './models/theme.dart';

@@ -1,4 +1,4 @@
-import 'package:Nutracker/ui/pages/settings/food/fruitsListTab.dart';
+import 'package:Nutracker/ui/pages/foodInfo/fruitsListTab.dart';
 import 'package:flutter/material.dart';
 
 class FoodListPage extends StatelessWidget {

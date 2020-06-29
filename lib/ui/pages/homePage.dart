@@ -1,5 +1,6 @@
 import 'package:fab_circular_menu/fab_circular_menu.dart';
 import 'package:flutter/material.dart';
+import 'package:toast/toast.dart';
 import '../../bloc/provider/provider.dart';
 import '../../bloc/themeBloc.dart';
 
@@ -11,6 +12,7 @@ class HomePage extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           title: Text('Nutrition Tracker'),
+          actions: getPopups(context),
           bottom: TabBar(tabs: [
             Tab(
               icon: Icon(Icons.local_drink),
@@ -34,6 +36,11 @@ class HomePage extends StatelessWidget {
         ]),
         floatingActionButton: FabCircularMenu(
           children: [
+            IconButton(
+                icon: Icon(Icons.info),
+                onPressed: () {
+                  Navigator.pushNamed(context, '/foodListPage');
+                }),
             BlocProvider<ThemeBloc>(
                 blocFactory: () => ThemeBloc(),
                 builder: (BuildContext context, ThemeBloc bloc) {
@@ -43,16 +50,11 @@ class HomePage extends StatelessWidget {
                         bloc.nextTheme();
                       });
                 }),
+            IconButton(icon: Icon(Icons.notifications), onPressed: () {}),
             IconButton(
                 icon: Icon(Icons.settings),
                 onPressed: () {
                   Navigator.pushNamed(context, '/settingsPage');
-                }),
-            IconButton(icon: Icon(Icons.volume_up), onPressed: () {}),
-            IconButton(
-                icon: Icon(Icons.info),
-                onPressed: () {
-                  Navigator.pushNamed(context, '/foodListPage');
                 }),
           ],
           ringWidth: 55,
@@ -61,5 +63,18 @@ class HomePage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  List<Widget> getPopups(BuildContext context) {
+    return [
+      PopupMenuButton<int>(
+        onSelected: (int selectedMenu) {
+          if (selectedMenu == 0) Toast.show('Notification Disabled', context);
+        },
+        itemBuilder: (BuildContext context) {
+          return [PopupMenuItem(value: 0, child: Text('Disable Notification'))];
+        },
+      )
+    ];
   }
 }

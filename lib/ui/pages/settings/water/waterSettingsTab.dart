@@ -1,4 +1,4 @@
-import 'package:Nutracker/ui/customWidgets/radioDialog.dart';
+import '../../../customWidgets/radioDialog.dart';
 import 'package:flutter/material.dart';
 import '../../../customWidgets/mySettingItem.dart';
 
@@ -35,7 +35,7 @@ class WaterSettingsTab extends StatelessWidget {
               showDialog(
                   context: context,
                   builder: (BuildContext context) {
-                    return RadioDialog('Drink Interval', '60 Minutes', intervalOptions,
+                    return RadioDialog('Drink Interval', 2, intervalOptions,
                         onSubmit: () {});
                   });
             })

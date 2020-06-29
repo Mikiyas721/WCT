@@ -1,10 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class RadioDialog extends StatefulWidget {
   final _RadioDialogState radioDialogState;
 
-  RadioDialog(String title, String groupValue, List<String> options,
+  RadioDialog(String title, int groupValue, List<String> options,
       {void Function() onSubmit})
       : radioDialogState = _RadioDialogState(
             title: title,
@@ -21,7 +20,7 @@ class RadioDialog extends StatefulWidget {
 class _RadioDialogState extends State<RadioDialog> {
   final String title;
   final List<String> options;
-  String groupValue;
+  int groupValue;
   void Function() onSubmit;
 
   _RadioDialogState(
@@ -42,20 +41,20 @@ class _RadioDialogState extends State<RadioDialog> {
             child: Text('Cancel')),
         FlatButton(onPressed: onSubmit, child: Text('Ok'))
       ],
-      content: ListView(
-        children: getChildren(),
-      ),
+      content: Scrollbar(
+          controller: ScrollController(),
+          child: ListView(shrinkWrap: true, children: getChildren())),
     );
   }
 
   List<Widget> getChildren() {
     List<Widget> list = List();
-    for (String option in options) {
-      list.add(RadioListTile<String>(
-        title: Text(option),
-        value: option,
+    for (int i = 0; i < options.length; i++) {
+      list.add(RadioListTile<int>(
+        title: Text(options[i]),
+        value: i,
         groupValue: groupValue,
-        onChanged: (String value) {
+        onChanged: (int value) {
           setState(() {
             groupValue = value;
           });
