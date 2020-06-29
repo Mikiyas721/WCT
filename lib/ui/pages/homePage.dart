@@ -48,7 +48,12 @@ class HomePage extends StatelessWidget {
                 onPressed: () {
                   Navigator.pushNamed(context, '/settingsPage');
                 }),
-            IconButton(icon: Icon(Icons.volume_up), onPressed: () {})
+            IconButton(icon: Icon(Icons.volume_up), onPressed: () {}),
+            IconButton(
+                icon: Icon(Icons.info),
+                onPressed: () {
+                  Navigator.pushNamed(context, '/foodListPage');
+                }),
           ],
           ringWidth: 55,
           ringDiameter: 250,

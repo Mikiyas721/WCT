@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../customWidgets/mySettingItem.dart';
+import '../../../customWidgets/mySettingItem.dart';
 
 class GeneralSettingsTab extends StatelessWidget {
   @override

@@ -1,14 +1,15 @@
+import 'package:Nutracker/ui/pages/settings/food/foodListPage.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import './models/theme.dart';
 import './resources/preferenceKeys.dart';
 import './resources/myThemeData.dart';
 import './injector.dart';
-import './ui/pages/conditionsPage.dart';
+import 'ui/pages/settings/water/conditionsPage.dart';
 import './ui/pages/homePage.dart';
-import './ui/pages/notificationPage.dart';
+import 'ui/pages/settings/water/notificationPage.dart';
 import 'ui/pages/settings/settingsPage.dart';
-import './ui/pages/themePage.dart';
+import 'ui/pages/settings/general/themePage.dart';
 import 'dataSource/themeDataSource.dart';
 import 'models/theme.dart';
 import 'resources/preferenceKeys.dart';
@@ -27,6 +28,7 @@ class MyApp extends StatelessWidget {
     '/notificationPage': (BuildContext context) => NotificationPage(),
     '/conditionsPage': (BuildContext context) => ConditionsPage(),
     '/themePage': (BuildContext context) => ThemePage(),
+    '/foodListPage': (BuildContext context) => FoodListPage()
   };
 
   @override

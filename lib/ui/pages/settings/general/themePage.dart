@@ -1,7 +1,7 @@
-import '../../bloc/provider/provider.dart';
-import '../../bloc/themeBloc.dart';
-import '../../resources/myThemeData.dart';
-import '../../ui/customWidgets/circularContainer.dart';
+import '../../../../bloc/provider/provider.dart';
+import '../../../../bloc/themeBloc.dart';
+import '../../../../resources/myThemeData.dart';
+import '../../../customWidgets/circularContainer.dart';
 import 'package:flutter/material.dart';
 
 class ThemePage extends StatelessWidget {

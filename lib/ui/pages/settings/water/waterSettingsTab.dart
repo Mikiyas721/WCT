@@ -1,6 +1,6 @@
 import 'package:Nutracker/ui/customWidgets/radioDialog.dart';
 import 'package:flutter/material.dart';
-import '../../../ui/customWidgets/mySettingItem.dart';
+import '../../../customWidgets/mySettingItem.dart';
 
 class WaterSettingsTab extends StatelessWidget {
   @override
