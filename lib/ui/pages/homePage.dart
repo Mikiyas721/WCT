@@ -1,3 +1,4 @@
+import 'package:Nutracker/ui/customWidgets/cup.dart';
 import 'package:fab_circular_menu/fab_circular_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:toast/toast.dart';
@@ -23,10 +24,8 @@ class HomePage extends StatelessWidget {
           ]),
         ),
         body: TabBarView(children: [
-          Icon(
-            Icons.local_drink,
-            size: 70,
-            semanticLabel: 'Water',
+          CustomPaint(
+            painter: Cup(),
           ),
           Icon(
             Icons.fastfood,

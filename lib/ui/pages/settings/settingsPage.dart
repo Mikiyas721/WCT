@@ -1,5 +1,5 @@
-import 'package:Nutracker/ui/pages/settings/food/foodSettingsTab.dart';
-import 'package:Nutracker/ui/pages/settings/general/generalSettingsTab.dart';
+import '../settings/food/foodSettingsTab.dart';
+import '../settings/general/generalSettingsTab.dart';
 import 'water/waterSettingsTab.dart';
 import 'package:flutter/material.dart';
 import 'package:shifting_tabbar/shifting_tabbar.dart';
