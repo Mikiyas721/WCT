@@ -1,4 +1,4 @@
-import '../../../customWidgets/radioDialog.dart';
+import '../../../customWidgets/myRadioDialogTile.dart';
 import 'package:flutter/material.dart';
 import '../../../customWidgets/mySettingItem.dart';
 
@@ -19,26 +19,22 @@ class WaterSettingsTab extends StatelessWidget {
             onTap: () {
               Navigator.pushNamed(context, '/notificationPage');
             }),
-        MySettingItem(
-            leadingIcon: Icons.timer,
-            title: 'Time',
-            onTap: () {
-              List<String> intervalOptions = [
-                '20 Minutes',
-                '40 Minutes',
-                '60 Minutes',
-                '90 Minutes',
-                '2 Hours',
-                '3 Hours',
-                '4 Hours'
-              ];
-              showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return RadioDialog('Drink Interval', 2, intervalOptions,
-                        onSubmit: () {});
-                  });
-            })
+        MyRadioDialogTile(
+          leadingIcon: Icons.timer,
+          title: 'Time',
+          options: [
+            '20 Minutes',
+            '40 Minutes',
+            '60 Minutes',
+            '90 Minutes',
+            '2 Hours',
+            '3 Hours',
+            '4 Hours'
+          ],
+          groupValue: 2,
+          trailing: '60 Minutes',
+          onSubmit: () {},
+        ),
       ]).toList(),
     );
   }

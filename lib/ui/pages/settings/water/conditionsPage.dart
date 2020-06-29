@@ -1,5 +1,5 @@
+import '../../../customWidgets/myRadioDialogTile.dart';
 import '../../../customWidgets/mySettingItem.dart';
-import '../../../customWidgets/radioDialog.dart';
 import '../../../customWidgets/textFieldDialog.dart';
 import 'package:flutter/material.dart';
 
@@ -14,26 +14,17 @@ class ConditionsPage extends StatelessWidget {
           ),
           body: ListView(
               children: ListTile.divideTiles(context: context, tiles: [
-            MySettingItem(
+            MyRadioDialogTile(
               leadingIcon: Icons.access_time,
               title: 'Age',
-              onTap: () {
-                showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      List<String> ageRanges = [
-                        '< 30 Years',
-                        '30 - 55 Years',
-                        '> 55 Years',
-                      ];
-                      return RadioDialog(
-                        'Age Range',
-                        0,
-                        ageRanges,
-                        onSubmit: () {},
-                      );
-                    });
-              },
+              options: [
+                '< 30 Years',
+                '30 - 55 Years',
+                '> 55 Years',
+              ],
+              groupValue: 0,
+              trailing: '< 30 Years',
+              onSubmit: () {},
             ),
             MySettingItem(
               leadingIcon: Icons.linear_scale,
@@ -47,44 +38,26 @@ class ConditionsPage extends StatelessWidget {
                     });
               },
             ),
-            MySettingItem(
+            MyRadioDialogTile(
               leadingIcon: Icons.local_drink,
               title: 'Other Drinks',
-              onTap: () {
-                showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      List<String> list = ['Small', 'Medium', 'High'];
-                      return RadioDialog(
-                        'Other drinks Level',
-                        0,
-                        list,
-                        onSubmit: () {},
-                      );
-                    });
-              },
+              options: ['Small', 'Medium', 'High'],
+              groupValue: 0,
+              trailing: 'Small',
+              onSubmit: () {},
             ),
-            MySettingItem(
+            MyRadioDialogTile(
               leadingIcon: Icons.fastfood,
               title: 'Meal fluid content',
-              onTap: () {
-                showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      List<String> list = [
-                        'Very Little (Mainly dry Cereals)',
-                        'Little',
-                        'Average',
-                        'Very Much (Mainly fruits and Vegetables)'
-                      ];
-                      return RadioDialog(
-                        "How much fluidly is your meal?",
-                        1,
-                        list,
-                        onSubmit: () {},
-                      );
-                    });
-              },
+              options: [
+                'Very Little (Mainly dry Cereals)',
+                'Little',
+                'Average',
+                'Very Much (Mainly fruits and Vegetables)'
+              ],
+              groupValue: 1,
+              trailing: 'Little',
+              onSubmit: () {},
             ),
           ]).toList()),
           bottomSheet: Card(
@@ -94,7 +67,10 @@ class ConditionsPage extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
-                    Text('Current recommended amount 5Ls', style: Theme.of(context).textTheme.body2,),
+                    Text(
+                      'Current recommended amount 5Ls',
+                      style: Theme.of(context).textTheme.body2,
+                    ),
                   ],
                 ),
                 padding: EdgeInsets.only(left: 10, top: 10, bottom: 10),
