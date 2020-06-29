@@ -36,11 +36,6 @@ class HomePage extends StatelessWidget {
         ]),
         floatingActionButton: FabCircularMenu(
           children: [
-            IconButton(
-                icon: Icon(Icons.info),
-                onPressed: () {
-                  Navigator.pushNamed(context, '/foodListPage');
-                }),
             BlocProvider<ThemeBloc>(
                 blocFactory: () => ThemeBloc(),
                 builder: (BuildContext context, ThemeBloc bloc) {

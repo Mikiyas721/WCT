@@ -18,29 +18,12 @@ class ThemePage extends StatelessWidget {
             ),
             body: ListView(
               children: <Widget>[
-                FlatButton(
-                    onPressed: () {},
-                    child: Text(
-                      "Create New Theme",
-                      style: Theme.of(context).textTheme.body2,
-                    )),
-                Card(
-                  margin: EdgeInsets.all(0),
-                  shape: BeveledRectangleBorder(),
-                  child: Padding(
-                      padding: EdgeInsets.only(
-                          left: 10, right: 10, top: 10, bottom: 10),
-                      child: Text(
-                        "You can create your own theme by changing the colors within the app. You can always switch back to the default Telegraph theme here.",
-                        style: Theme.of(context).textTheme.caption,
-                      )),
-                ),
                 StreamBuilder(
                     stream: bloc.themeRepo.themeDataStream,
                     builder: (BuildContext context, AsyncSnapshot snapshot) {
                       return ListTile(
                         leading: CircularContainer(
-                            backGroundColor:
+                            backgroundColor:
                                 MyThemeData.defaultLight.primaryColor),
                         title: Text(
                           "Light",
@@ -59,7 +42,7 @@ class ThemePage extends StatelessWidget {
                     builder: (BuildContext context, AsyncSnapshot snapshot) {
                       return ListTile(
                         leading: CircularContainer(
-                            backGroundColor:
+                            backgroundColor:
                                 MyThemeData.defaultDark.primaryColor),
                         title: Text(
                           "Dark",
@@ -78,7 +61,7 @@ class ThemePage extends StatelessWidget {
                     builder: (BuildContext context, AsyncSnapshot snapshot) {
                       return ListTile(
                         leading: CircularContainer(
-                            backGroundColor: MyThemeData.darkBlue.primaryColor),
+                            backgroundColor: MyThemeData.darkBlue.primaryColor),
                         title: Text(
                           "Dark Blue",
                           style: Theme.of(context).textTheme.body2,
@@ -96,7 +79,7 @@ class ThemePage extends StatelessWidget {
                     builder: (BuildContext context, AsyncSnapshot snapshot) {
                       return ListTile(
                         leading: CircularContainer(
-                            backGroundColor:
+                            backgroundColor:
                                 MyThemeData.defaultLerp.primaryColor),
                         title: Text(
                           "Lerp",

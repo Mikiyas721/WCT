@@ -1,4 +1,3 @@
-import 'package:Nutracker/ui/pages/foodInfo/foodListPage.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import './models/theme.dart';
@@ -28,7 +27,6 @@ class MyApp extends StatelessWidget {
     '/notificationPage': (BuildContext context) => NotificationPage(),
     '/conditionsPage': (BuildContext context) => ConditionsPage(),
     '/themePage': (BuildContext context) => ThemePage(),
-    '/foodListPage': (BuildContext context) => FoodListPage()
   };
 
   @override
