@@ -11,10 +11,26 @@ class SettingsPage extends StatelessWidget {
         length: 3,
         child: Scaffold(
             appBar: ShiftingTabBar(
+              labelStyle: Theme.of(context).textTheme.body1,
               tabs: <ShiftingTab>[
-                ShiftingTab(icon: Icon(Icons.local_drink), text: 'Water'),
-                ShiftingTab(icon: Icon(Icons.menu), text: 'General'),
-                ShiftingTab(icon: Icon(Icons.fastfood), text: 'Nutrition')
+                ShiftingTab(
+                    icon: Icon(
+                      Icons.local_drink,
+                      color: Theme.of(context).iconTheme.color,
+                    ),
+                    text: 'Water'),
+                ShiftingTab(
+                    icon: Icon(
+                      Icons.menu,
+                      color: Theme.of(context).appBarTheme.color,
+                    ),
+                    text: 'General'),
+                ShiftingTab(
+                    icon: Icon(
+                      Icons.fastfood,
+                      color: Theme.of(context).iconTheme.color,
+                    ),
+                    text: 'Nutrition')
               ],
             ),
             body: TabBarView(

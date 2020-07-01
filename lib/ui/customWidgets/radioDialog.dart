@@ -1,15 +1,17 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class RadioDialog extends StatefulWidget {
   final _RadioDialogState radioDialogState;
 
-  RadioDialog(String title, int groupValue, List<String> options,
-      {void Function() onSubmit})
+  RadioDialog(String title, String groupValue, List<String> options,
+      {void Function() onSubmit, ValueChanged<String> onRadioSelected})
       : radioDialogState = _RadioDialogState(
             title: title,
             options: options,
             groupValue: groupValue,
-            onSubmit: onSubmit);
+            onSubmit: onSubmit,
+            onRadioSelected: onRadioSelected);
 
   @override
   State<StatefulWidget> createState() {
@@ -20,18 +22,21 @@ class RadioDialog extends StatefulWidget {
 class _RadioDialogState extends State<RadioDialog> {
   final String title;
   final List<String> options;
-  int groupValue;
+  String groupValue;
   void Function() onSubmit;
+  ValueChanged<String> onRadioSelected;
 
   _RadioDialogState(
       {@required this.title,
       @required this.options,
       @required this.groupValue,
-      this.onSubmit});
+      this.onSubmit,
+      ValueChanged<String> onRadioSelected});
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      contentPadding: EdgeInsets.all(5),
       title: Text(title),
       actions: <Widget>[
         FlatButton(
@@ -50,11 +55,11 @@ class _RadioDialogState extends State<RadioDialog> {
   List<Widget> getChildren() {
     List<Widget> list = List();
     for (int i = 0; i < options.length; i++) {
-      list.add(RadioListTile<int>(
+      list.add(RadioListTile<String>(
         title: Text(options[i]),
-        value: i,
+        value: options[i],
         groupValue: groupValue,
-        onChanged: (int value) {
+        onChanged: (String value) {
           setState(() {
             groupValue = value;
           });

@@ -1,3 +1,12 @@
 class PreferenceKeys {
   static final String selectedTheme = 'SelectedTheme';
+  static final String age = 'Age';
+  static final String weight = 'Weight';
+  static final String otherDrinks = 'OtherDrinks';
+  static final String mealFluid = 'MealFluid';
+  static final String disableNotification = 'DisableNotification';
+  static final String notification = 'Notification';
+  static final String popupNotification = 'PopupNotification';
+  static final String alarm = 'Alarm';
+  static final String time = 'Time';
 }

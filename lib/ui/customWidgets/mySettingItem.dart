@@ -23,7 +23,7 @@ class MySettingItem extends StatelessWidget {
         leadingIcon,
       ),
       title: Text(
-        title,
+        '$title',
       ),
       trailing: trailing != null
           ? Text(

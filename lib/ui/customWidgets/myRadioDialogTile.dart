@@ -6,18 +6,19 @@ class MyRadioDialogTile extends StatelessWidget {
   final String title;
   final List<String> options;
   final String trailing;
-  final int groupValue;
+  final String groupValue;
   final Function onSubmit;
   final IconData leadingIcon;
+  final ValueChanged<String> onRadioSelected;
 
-  MyRadioDialogTile({
-    @required this.title,
-    @required this.options,
-    @required this.trailing,
-    @required this.groupValue,
-    @required this.onSubmit,
-    this.leadingIcon,
-  });
+  MyRadioDialogTile(
+      {@required this.title,
+      @required this.options,
+      @required this.trailing,
+      @required this.groupValue,
+      @required this.onSubmit,
+      this.leadingIcon,
+      this.onRadioSelected});
 
   @override
   Widget build(BuildContext context) {
@@ -29,8 +30,13 @@ class MyRadioDialogTile extends StatelessWidget {
         showDialog(
             context: context,
             builder: (BuildContext context) {
-              return RadioDialog(title, groupValue, options,
-                  onSubmit: onSubmit);
+              return RadioDialog(
+                title,
+                groupValue,
+                options,
+                onSubmit: onSubmit,
+                onRadioSelected: onRadioSelected,
+              );
             });
       },
     );
