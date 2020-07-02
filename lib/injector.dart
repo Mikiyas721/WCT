@@ -1,8 +1,5 @@
-import 'package:Nutracker/models/boolean.dart';
+import './models/boolean.dart';
 import './models/conditions.dart';
-import 'package:get_it/get_it.dart';
-import 'package:rxdart/subjects.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import './dataSource/themeDataSource.dart';
 import './models/theme.dart';
 import './dataSource/conditions/ageDataSource.dart';
@@ -11,10 +8,17 @@ import './dataSource/conditions/otherDrinkDataSource.dart';
 import './dataSource/conditions/weightDataSource.dart';
 import './dataSource/conditions/recommendedDataSource.dart';
 import './dataSource/notification/alarmDataSource.dart';
+import './dataSource/notification/nowExercisingDataSource.dart';
 import './dataSource/notification/disableNotificationDataSource.dart';
 import './dataSource/notification/notificationDataSource.dart';
 import './dataSource/notification/popupDataSource.dart';
 import './dataSource/timeDataSource.dart';
+import 'package:get_it/get_it.dart';
+import 'package:rxdart/subjects.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'dataSource/conditions/exerciseLengthDataSource.dart';
+import 'dataSource/conditions/exerciseTypeDataSource.dart';
 
 void inject() async {
   final preference = await SharedPreferences.getInstance();
@@ -24,6 +28,10 @@ void inject() async {
       () => ThemeRepo(BehaviorSubject<ThemeModel>()));
   GetIt.instance.registerLazySingleton<AgeRepo>(
       () => AgeRepo(BehaviorSubject<StringModel>()));
+  GetIt.instance.registerLazySingleton<ExerciseLengthRepo>(
+          () => ExerciseLengthRepo(BehaviorSubject<StringModel>()));
+  GetIt.instance.registerLazySingleton<ExerciseTypeRepo>(
+          () => ExerciseTypeRepo(BehaviorSubject<StringModel>()));
   GetIt.instance.registerLazySingleton<MealFluidRepo>(
       () => MealFluidRepo(BehaviorSubject<StringModel>()));
   GetIt.instance.registerLazySingleton<OtherDrinksRepo>(
@@ -35,6 +43,8 @@ void inject() async {
 
   GetIt.instance.registerLazySingleton<DisableNotificationRepo>(
       () => DisableNotificationRepo(BehaviorSubject<BooleanModel>()));
+  GetIt.instance.registerLazySingleton<NowExercisingRepo>(
+          () => NowExercisingRepo(BehaviorSubject<BooleanModel>()));
   GetIt.instance.registerLazySingleton<NotificationRepo>(
       () => NotificationRepo(BehaviorSubject<BooleanModel>()));
   GetIt.instance.registerLazySingleton<PopUpRepo>(

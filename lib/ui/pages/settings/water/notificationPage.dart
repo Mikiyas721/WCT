@@ -20,11 +20,21 @@ class NotificationPage extends StatelessWidget {
                     builder:
                         (BuildContext context, AsyncSnapshot<bool> snapshot) {
                       return SwitchListTile(
-                        title: Text('Disable'),
+                        title: Text('Disable Notification'),
                         value: bloc.disableValue(snapshot.data),
                         onChanged: bloc.onDisableTap,
                       );
                     }),
+                StreamBuilder(
+                  stream: bloc.nowExercisingStream,
+                  builder: (BuildContext context, AsyncSnapshot snapshot) {
+                    return SwitchListTile(
+                      title: Text('Now Exercising'),
+                      value: bloc.nowExercisingValue(snapshot.data),
+                      onChanged: bloc.onNowExercisingTap,
+                    );
+                  },
+                ),
                 StreamBuilder(
                     stream: bloc.notificationStream,
                     builder: (BuildContext context, AsyncSnapshot snapshot) {

@@ -22,7 +22,7 @@ class SettingsPage extends StatelessWidget {
                 ShiftingTab(
                     icon: Icon(
                       Icons.menu,
-                      color: Theme.of(context).appBarTheme.color,
+                      color: Theme.of(context).iconTheme.color,
                     ),
                     text: 'General'),
                 ShiftingTab(

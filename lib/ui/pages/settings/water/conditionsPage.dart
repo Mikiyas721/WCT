@@ -1,8 +1,7 @@
+import '../../../customWidgets/myTextFieldDialogTile.dart';
 import '../../../../bloc/conditionsBloc.dart';
 import '../../../../bloc/provider/provider.dart';
 import '../../../customWidgets/myRadioDialogTile.dart';
-import '../../../customWidgets/mySettingItem.dart';
-import '../../../customWidgets/textFieldDialog.dart';
 import 'package:flutter/material.dart';
 
 class ConditionsPage extends StatelessWidget {
@@ -11,7 +10,6 @@ class ConditionsPage extends StatelessWidget {
     return BlocProvider<ConditionsBloc>(
       blocFactory: () => ConditionsBloc(),
       builder: (BuildContext context, ConditionsBloc bloc) {
-        String recommended = bloc.fetchRecommended();
         return DefaultTabController(
             length: 2,
             child: Scaffold(
@@ -42,19 +40,12 @@ class ConditionsPage extends StatelessWidget {
                     stream: bloc.weightStream,
                     builder:
                         (BuildContext context, AsyncSnapshot<String> snapshot) {
-                      return MySettingItem(
+                      return MyTextFieldDialogTile(
+                          //TODO Replace with a Sliding Number Picker
+                          tileTitle: 'Weight',
+                          dialogTitle: 'Weight in Kgs',
                           leadingIcon: Icons.linear_scale,
-                          title: 'Weight',
-                          onTap: () {
-                            showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return TextFieldDialog(
-                                    title: 'Weight in Kgs',
-                                    onValueChanged: bloc.onWeightEntered,
-                                  );
-                                });
-                          },
+                          onValueChanged: bloc.onWeightEntered,
                           trailing: bloc.getWeight(snapshot.data));
                     }),
                 StreamBuilder(
@@ -87,14 +78,49 @@ class ConditionsPage extends StatelessWidget {
                         trailing: bloc.getMealFluidTrailing(snapshot.data),
                         onRadioSelected: bloc.onMealFluidsChanged,
                       );
-                    })
+                    }),
+                Card(
+                  shape: BeveledRectangleBorder(),
+                  margin: EdgeInsets.all(0),
+                  child: Padding(
+                    padding: EdgeInsets.all(8),
+                    child: Text(
+                        "If you exercise, please fill the conditions below.\nWhen you start exercising enable the 'Now Exercising' Mood."),
+                  ),
+                ),
+                StreamBuilder(
+                    stream: bloc.exerciseTypeStream,
+                    builder:
+                        (BuildContext context, AsyncSnapshot<String> snapshot) {
+                      return MyRadioDialogTile(
+                        leadingIcon: Icons.accessibility,
+                        title: 'Exercise Type',
+                        dialogTitle: 'How much do you sweat, during exercise?',
+                        options: ['A little', 'Average', 'Very much'],
+                        groupValue: bloc.getExerciseType(snapshot.data),
+                        trailing: bloc.getExerciseType(snapshot.data),
+                        onRadioSelected: bloc.onExerciseTypeChanged,
+                      );
+                    }),
+                StreamBuilder(
+                    stream: bloc.exerciseLengthStream,
+                    builder:
+                    (BuildContext context, AsyncSnapshot<String> snapshot) {
+                  return MyTextFieldDialogTile(
+                    leadingIcon: Icons.timer,
+                    tileTitle: 'Exercise Length',
+                    dialogTitle: 'How long do you exercise per day',
+                    onValueChanged: bloc.onExerciseLengthChanged,
+                    trailing: bloc.getExerciseLength(snapshot.data),
+                  );
+                })
               ]).toList()),
+              //TODO Add daily physical engagement
               bottomSheet: StreamBuilder(
                 stream: bloc.recommendedStream,
                 builder:
                     (BuildContext context, AsyncSnapshot<String> snapshot) {
-                  return recommended != null
-                      ? Card(
+                  return Card(
                           shape: BeveledRectangleBorder(),
                           color: Theme.of(context).primaryColorLight,
                           margin: EdgeInsets.all(0),
@@ -102,19 +128,15 @@ class ConditionsPage extends StatelessWidget {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: <Widget>[
-                                Text(
-                                  'Current recommended amount ${snapshot.data == null ? recommended : snapshot.data}',
+                                Text(bloc.getRecommendedString(snapshot.data),
                                   style: Theme.of(context).textTheme.body2,
                                 )
                               ],
                             ),
                             padding:
                                 EdgeInsets.only(left: 10, top: 10, bottom: 10),
-                          ))
-                      : Container(
-                          width: 0,
-                          height: 0,
-                        );
+                          ));
+
                 },
               ),
             ));

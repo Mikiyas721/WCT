@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 class MyRadioDialogTile extends StatelessWidget {
   final String title;
+  final String dialogTitle;
   final List<String> options;
   final String trailing;
   final String groupValue;
@@ -12,6 +13,7 @@ class MyRadioDialogTile extends StatelessWidget {
 
   MyRadioDialogTile(
       {@required this.title,
+      this.dialogTitle,
       @required this.options,
       @required this.trailing,
       @required this.groupValue,
@@ -29,7 +31,7 @@ class MyRadioDialogTile extends StatelessWidget {
             context: context,
             builder: (BuildContext context) {
               return RadioDialog(
-                title,
+                dialogTitle==null?title:dialogTitle,
                 groupValue,
                 options,
                 onRadioSelected: onRadioSelected,

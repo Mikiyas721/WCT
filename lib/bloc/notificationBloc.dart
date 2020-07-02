@@ -1,6 +1,8 @@
-import 'package:Nutracker/models/conditions.dart';
+import 'package:flutter/material.dart';
 
+import '../models/conditions.dart';
 import '../dataSource/notification/alarmDataSource.dart';
+import '../dataSource/notification/nowExercisingDataSource.dart';
 import '../dataSource/notification/notificationDataSource.dart';
 import '../dataSource/notification/popupDataSource.dart';
 import '../models/boolean.dart';
@@ -11,12 +13,16 @@ import '../core/utils/disposable.dart';
 
 class NotificationBloc extends Disposable {
   DisableNotificationRepo _disableNotificationRepo = GetIt.instance.get();
+  NowExercisingRepo _nowExercisingRepo = GetIt.instance.get();
   NotificationRepo _notificationRepo = GetIt.instance.get();
   PopUpRepo _popUpRepo = GetIt.instance.get();
   AlarmRepo _alarmRepo = GetIt.instance.get();
 
   Stream<bool> get disableNotificationStream =>
       _disableNotificationRepo.getStream<bool>((newValue) => newValue);
+
+  Stream<bool> get nowExercisingStream =>
+      _nowExercisingRepo.getStream<bool>((newValue) => newValue);
 
   Stream<bool> get notificationStream =>
       _notificationRepo.getStream<bool>((newValue) => newValue);
@@ -33,6 +39,12 @@ class NotificationBloc extends Disposable {
         PreferenceKeys.disableNotification, newValue);
   }
 
+  void onNowExercisingTap(bool newValue) {
+    _nowExercisingRepo.updateStream(BooleanModel(newValue));
+    _nowExercisingRepo.setPreference<bool>(
+        PreferenceKeys.nowExercising, newValue);
+  }
+
   void onNotificationTap(bool newValue) {
     _notificationRepo.updateStream(BooleanModel(newValue));
     _notificationRepo.setPreference<bool>(
@@ -47,6 +59,12 @@ class NotificationBloc extends Disposable {
   bool disableValue(bool snapshot) {
     bool x = _disableNotificationRepo
         .getPreference<bool>(PreferenceKeys.disableNotification);
+    return snapshot == null ? x == null ? false : x : snapshot;
+  }
+
+  bool nowExercisingValue(bool snapshot) {
+    bool x =
+        _nowExercisingRepo.getPreference<bool>(PreferenceKeys.nowExercising);
     return snapshot == null ? x == null ? false : x : snapshot;
   }
 
@@ -69,6 +87,28 @@ class NotificationBloc extends Disposable {
   void onAlarmChanged(String newValue) {
     _alarmRepo.updateStream(StringModel(data: newValue));
     _alarmRepo.setPreference<String>(PreferenceKeys.alarm, newValue);
+  }
+
+  void onAlarmSwitched() {
+    String alarmState = _alarmRepo.getPreference<String>(PreferenceKeys.alarm);
+    String newAlarm;
+    if (alarmState == "Silent")
+      newAlarm = "Vibrate";
+    else if (alarmState == "Vibrate") newAlarm = "Sound";
+    else if (alarmState == "Sound") newAlarm = "Silent";
+    _alarmRepo.updateStream(StringModel(data: newAlarm));
+    _alarmRepo.setPreference<String>(PreferenceKeys.alarm, newAlarm);
+  }
+
+  IconData getNotificationIcon(String snapShot) {
+    if (alarmGroupValue(snapShot) == "Silent")
+      return Icons.volume_off;
+    else if (alarmGroupValue(snapShot) == "Vibrate")
+      return Icons.vibration;
+    else if (alarmGroupValue(snapShot) == "Sound")
+      return Icons.volume_up;
+    else
+      return Icons.notifications;
   }
 
   @override

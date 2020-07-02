@@ -1,3 +1,4 @@
+import 'package:Nutracker/bloc/notificationBloc.dart';
 import 'package:Nutracker/ui/customWidgets/cup.dart';
 import 'package:fab_circular_menu/fab_circular_menu.dart';
 import 'package:flutter/material.dart';
@@ -44,7 +45,18 @@ class HomePage extends StatelessWidget {
                         bloc.nextTheme();
                       });
                 }),
-            IconButton(icon: Icon(Icons.notifications), onPressed: () {}),
+            BlocProvider(
+                blocFactory: () => NotificationBloc(),
+                builder: (BuildContext context, NotificationBloc bloc) {
+                  return StreamBuilder(
+                    stream: bloc.alarmStream,
+                    builder: (BuildContext context, AsyncSnapshot snapshot) {
+                      return IconButton(
+                          icon: Icon(bloc.getNotificationIcon(snapshot.data)),
+                          onPressed: bloc.onAlarmSwitched);
+                    },
+                  );
+                }),
             IconButton(
                 icon: Icon(Icons.settings),
                 onPressed: () {
@@ -61,12 +73,51 @@ class HomePage extends StatelessWidget {
 
   List<Widget> getPopups(BuildContext context) {
     return [
-      PopupMenuButton<int>(
-        onSelected: (int selectedMenu) {
-          if (selectedMenu == 0) Toast.show('Notification Disabled', context);
-        },
-        itemBuilder: (BuildContext context) {
-          return [PopupMenuItem(value: 0, child: Text('Disable Notification'))];
+      BlocProvider(
+        blocFactory: () => NotificationBloc(),
+        builder: (BuildContext context, NotificationBloc bloc) {
+          return PopupMenuButton<int>(
+            onSelected: (int selectedMenu) {
+              if (selectedMenu == 0) {
+                bool currentDisable = bloc.disableValue(null);
+                bloc.onDisableTap(!currentDisable);
+                currentDisable == true
+                    ? Toast.show('Notification Enabled', context)
+                    : Toast.show('Notification Disabled', context);
+              } else if (selectedMenu == 1) {
+                bool currentDisable = bloc.nowExercisingValue(null);
+                bloc.onNowExercisingTap(!currentDisable);
+                currentDisable == true
+                    ? Toast.show('Now Exercising Disabled', context)
+                    : Toast.show('Now Exercising Enabled', context);
+              }
+            },
+            itemBuilder: (BuildContext context) {
+              return [
+                PopupMenuItem(
+                    value: 0,
+                    child: StreamBuilder(
+                        stream: bloc.disableNotificationStream,
+                        builder:
+                            (BuildContext context, AsyncSnapshot snapshot) {
+                          return Text(bloc.disableValue(snapshot.data) == true
+                              ? 'Enable Notification'
+                              : 'Disable Notification');
+                        })),
+                PopupMenuItem(
+                    value: 1,
+                    child: StreamBuilder(
+                        stream: bloc.nowExercisingStream,
+                        builder:
+                            (BuildContext context, AsyncSnapshot snapshot) {
+                          return Text(
+                              bloc.nowExercisingValue(snapshot.data) == true
+                                  ? 'Disable Exercising'
+                                  : 'Enable Exercising');
+                        }))
+              ];
+            },
+          );
         },
       )
     ];
