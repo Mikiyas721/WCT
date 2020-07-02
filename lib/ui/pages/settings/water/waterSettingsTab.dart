@@ -1,6 +1,5 @@
-import 'package:Nutracker/bloc/provider/provider.dart';
-import 'package:Nutracker/bloc/timeBloc.dart';
-
+import '../../../../bloc/provider/provider.dart';
+import '../../../../bloc/timeBloc.dart';
 import '../../../customWidgets/myRadioDialogTile.dart';
 import 'package:flutter/material.dart';
 import '../../../customWidgets/mySettingItem.dart';
@@ -27,23 +26,22 @@ class WaterSettingsTab extends StatelessWidget {
             builder: (BuildContext context, TimeBloc bloc) {
               return StreamBuilder(
                 stream: bloc.timeStream,
-                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
                   return MyRadioDialogTile(
-                    leadingIcon: Icons.timer,
-                    title: 'Time',
-                    options: [
-                      '20 Minutes',
-                      '40 Minutes',
-                      '60 Minutes',
-                      '90 Minutes',
-                      '2 Hours',
-                      '3 Hours',
-                      '4 Hours'
-                    ],
-                    groupValue: bloc.getTimeGroupValue(snapshot.data),
-                    trailing: bloc.getTimeGroupValue(snapshot.data),
-                    onSubmit: bloc.onTimeSubmit,
-                  );
+                      leadingIcon: Icons.timer,
+                      title: 'Time',
+                      options: [
+                        '20 Minutes',
+                        '40 Minutes',
+                        '60 Minutes',
+                        '90 Minutes',
+                        '2 Hours',
+                        '3 Hours',
+                        '4 Hours'
+                      ],
+                      groupValue: bloc.getTimeGroupValue(snapshot.data),
+                      trailing: bloc.getTimeGroupValue(snapshot.data),
+                      onRadioSelected: bloc.onTimeChanged);
                 },
               );
             }),

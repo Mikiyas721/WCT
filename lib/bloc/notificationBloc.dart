@@ -1,3 +1,5 @@
+import 'package:Nutracker/models/conditions.dart';
+
 import '../dataSource/notification/alarmDataSource.dart';
 import '../dataSource/notification/notificationDataSource.dart';
 import '../dataSource/notification/popupDataSource.dart';
@@ -12,6 +14,18 @@ class NotificationBloc extends Disposable {
   NotificationRepo _notificationRepo = GetIt.instance.get();
   PopUpRepo _popUpRepo = GetIt.instance.get();
   AlarmRepo _alarmRepo = GetIt.instance.get();
+
+  Stream<bool> get disableNotificationStream =>
+      _disableNotificationRepo.getStream<bool>((newValue) => newValue);
+
+  Stream<bool> get notificationStream =>
+      _notificationRepo.getStream<bool>((newValue) => newValue);
+
+  Stream<bool> get popupStream =>
+      _popUpRepo.getStream<bool>((newValue) => newValue);
+
+  Stream<String> get alarmStream =>
+      _alarmRepo.getStream<String>((newValue) => newValue);
 
   void onDisableTap(bool newValue) {
     _disableNotificationRepo.updateStream(BooleanModel(newValue));
@@ -38,7 +52,7 @@ class NotificationBloc extends Disposable {
 
   bool notificationValue(bool snapshot) {
     bool x = _notificationRepo.getPreference<bool>(PreferenceKeys.notification);
-    return snapshot == null ? x ? false : x : snapshot;
+    return snapshot == null ? x == null ? false : x : snapshot;
   }
 
   bool popupValue(bool snapshot) {
@@ -48,11 +62,14 @@ class NotificationBloc extends Disposable {
 
   String alarmGroupValue(String snapshot) {
     return snapshot == null
-        ? _alarmRepo.getPreference<bool>(PreferenceKeys.alarm)
+        ? _alarmRepo.getPreference<String>(PreferenceKeys.alarm)
         : snapshot;
   }
 
-  void onAlarmSubmitted() {}
+  void onAlarmChanged(String newValue) {
+    _alarmRepo.updateStream(StringModel(data: newValue));
+    _alarmRepo.setPreference<String>(PreferenceKeys.alarm, newValue);
+  }
 
   @override
   void dispose() {}

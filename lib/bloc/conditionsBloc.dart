@@ -15,8 +15,6 @@ class ConditionsBloc extends Disposable {
   MealFluidRepo _mealFluidRepo = GetIt.instance.get();
   RecommendedRepo _recommendedRepo = GetIt.instance.get();
 
-  String _tempAge;
-
   Stream<String> get ageStream => _ageRepo.getStream<String>((value) => value);
 
   Stream<String> get weightStream =>
@@ -59,34 +57,30 @@ class ConditionsBloc extends Disposable {
     String rawMealFluid;
     mealFluid == null
         ? rawMealFluid =
-            _mealFluidRepo.getPreference<String>(PreferenceKeys.mealFluid)
+        _mealFluidRepo.getPreference<String>(PreferenceKeys.mealFluid)
         : rawMealFluid = mealFluid;
-    return mealFluid != null ? rawMealFluid.split('(')[0] : null;
+    return rawMealFluid != null ? rawMealFluid.split('(')[0] : null;
   }
 
-  void setTempoAge(String newValue) {
-    _tempAge = newValue;
+  void onAgeChanged(String newValue) {
+    _ageRepo.updateStream(StringModel(data: newValue));
+    _ageRepo.setPreference<String>(PreferenceKeys.age, newValue);
   }
 
-  void onAgeSubmitted() {
-    _ageRepo.updateStream(StringModel(data: _tempAge));
-    _ageRepo.setPreference<String>(PreferenceKeys.age, _tempAge);
+  void onWeightEntered(String newValue) {
+    _weightRepo.updateStream(StringModel(data: newValue));
+    _weightRepo.setPreference<String>(PreferenceKeys.weight, newValue);
   }
 
-  void onWeightSubmitted() {
-    _weightRepo.updateStream(StringModel(data: _tempAge));
-    _weightRepo.setPreference<String>(PreferenceKeys.weight, _tempAge);
-  }
-
-  void onOtherDrinksSubmitted() {
-    _otherDrinksRepo.updateStream(StringModel(data: _tempAge));
+  void onOtherDrinksChanged(String newValue) {
+    _otherDrinksRepo.updateStream(StringModel(data: newValue));
     _otherDrinksRepo.setPreference<String>(
-        PreferenceKeys.otherDrinks, _tempAge);
+        PreferenceKeys.otherDrinks, newValue);
   }
 
-  void onMealFluidsSubmitted() {
-    _mealFluidRepo.updateStream(StringModel(data: _tempAge));
-    _mealFluidRepo.setPreference<String>(PreferenceKeys.mealFluid, _tempAge);
+  void onMealFluidsChanged(String newValue) {
+    _mealFluidRepo.updateStream(StringModel(data: newValue));
+    _mealFluidRepo.setPreference<String>(PreferenceKeys.mealFluid, newValue);
   }
 
   void fetchRecommended() {}

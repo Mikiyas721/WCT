@@ -2,23 +2,30 @@ import 'package:flutter/material.dart';
 
 class TextFieldDialog extends StatelessWidget {
   final String title;
-  final Function onSubmit;
+  final ValueChanged<String> onValueChanged;
 
-  TextFieldDialog({@required this.title, @required this.onSubmit});
+  TextFieldDialog(
+      {@required this.title,
+      @required this.onValueChanged});
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
       title: Text(title),
-      content: TextField(keyboardType: TextInputType.number,),
+      content: TextField(
+        keyboardType: TextInputType.number,
+        onChanged: (String newValue) {
+          onValueChanged(newValue);
+        },
+      ),
       actions: <Widget>[
         FlatButton(
             onPressed: () {
               Navigator.pop(context);
             },
-            child: Text('Cancel')),
-        FlatButton(onPressed: onSubmit, child: Text('Ok'))
+            child: Text('Ok'))
       ],
     );
   }
+//TODO Add Validation
 }

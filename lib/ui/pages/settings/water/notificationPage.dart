@@ -15,30 +15,35 @@ class NotificationPage extends StatelessWidget {
             ),
             body: ListView(
               children: ListTile.divideTiles(context: context, tiles: [
-                StreamBuilder(builder:
-                    (BuildContext context, AsyncSnapshot<bool> snapshot) {
-                  return SwitchListTile(
-                    title: Text('Disable'),
-                    value: bloc.disableValue(snapshot.data),
-                    onChanged: bloc.onDisableTap,
-                  );
-                }),
                 StreamBuilder(
+                    stream: bloc.disableNotificationStream,
+                    builder:
+                        (BuildContext context, AsyncSnapshot<bool> snapshot) {
+                      return SwitchListTile(
+                        title: Text('Disable'),
+                        value: bloc.disableValue(snapshot.data),
+                        onChanged: bloc.onDisableTap,
+                      );
+                    }),
+                StreamBuilder(
+                    stream: bloc.notificationStream,
                     builder: (BuildContext context, AsyncSnapshot snapshot) {
-                  return SwitchListTile(
-                      title: Text('Notification'),
-                      value: bloc.disableValue(snapshot.data),
-                      onChanged: bloc.onNotificationTap);
-                }),
+                      return SwitchListTile(
+                          title: Text('Notification'),
+                          value: bloc.notificationValue(snapshot.data),
+                          onChanged: bloc.onNotificationTap);
+                    }),
                 StreamBuilder(
+                  stream: bloc.popupStream,
                   builder: (BuildContext context, AsyncSnapshot snapshot) {
                     return SwitchListTile(
                         title: Text('Popup Notification'),
-                        value: bloc.disableValue(snapshot.data),
+                        value: bloc.popupValue(snapshot.data),
                         onChanged: bloc.onPopupTap);
                   },
                 ),
                 StreamBuilder(
+                  stream: bloc.alarmStream,
                   builder: (BuildContext context, AsyncSnapshot snapshot) {
                     return MyRadioDialogTile(
                       leadingIcon: Icons.surround_sound,
@@ -50,7 +55,7 @@ class NotificationPage extends StatelessWidget {
                       ],
                       groupValue: bloc.alarmGroupValue(snapshot.data),
                       trailing: bloc.alarmGroupValue(snapshot.data),
-                      onSubmit: bloc.onAlarmSubmitted,
+                      onRadioSelected: bloc.onAlarmChanged,
                     );
                   },
                 )

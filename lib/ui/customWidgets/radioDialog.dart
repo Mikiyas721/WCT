@@ -5,12 +5,11 @@ class RadioDialog extends StatefulWidget {
   final _RadioDialogState radioDialogState;
 
   RadioDialog(String title, String groupValue, List<String> options,
-      {void Function() onSubmit, ValueChanged<String> onRadioSelected})
+      {ValueChanged<String> onRadioSelected})
       : radioDialogState = _RadioDialogState(
             title: title,
             options: options,
             groupValue: groupValue,
-            onSubmit: onSubmit,
             onRadioSelected: onRadioSelected);
 
   @override
@@ -23,15 +22,13 @@ class _RadioDialogState extends State<RadioDialog> {
   final String title;
   final List<String> options;
   String groupValue;
-  void Function() onSubmit;
   ValueChanged<String> onRadioSelected;
 
   _RadioDialogState(
       {@required this.title,
       @required this.options,
       @required this.groupValue,
-      this.onSubmit,
-      ValueChanged<String> onRadioSelected});
+      @required this.onRadioSelected});
 
   @override
   Widget build(BuildContext context) {
@@ -43,8 +40,7 @@ class _RadioDialogState extends State<RadioDialog> {
             onPressed: () {
               Navigator.pop(context);
             },
-            child: Text('Cancel')),
-        FlatButton(onPressed: onSubmit, child: Text('Ok'))
+            child: Text('Ok'))
       ],
       content: Scrollbar(
           controller: ScrollController(),
@@ -62,6 +58,7 @@ class _RadioDialogState extends State<RadioDialog> {
         onChanged: (String value) {
           setState(() {
             groupValue = value;
+            onRadioSelected(value);
           });
         },
       ));

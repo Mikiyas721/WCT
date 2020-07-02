@@ -1,5 +1,5 @@
-import 'package:Nutracker/ui/customWidgets/mySettingItem.dart';
-import 'package:Nutracker/ui/customWidgets/radioDialog.dart';
+import '../customWidgets/mySettingItem.dart';
+import '../customWidgets/radioDialog.dart';
 import 'package:flutter/material.dart';
 
 class MyRadioDialogTile extends StatelessWidget {
@@ -7,7 +7,6 @@ class MyRadioDialogTile extends StatelessWidget {
   final List<String> options;
   final String trailing;
   final String groupValue;
-  final Function onSubmit;
   final IconData leadingIcon;
   final ValueChanged<String> onRadioSelected;
 
@@ -16,9 +15,8 @@ class MyRadioDialogTile extends StatelessWidget {
       @required this.options,
       @required this.trailing,
       @required this.groupValue,
-      @required this.onSubmit,
       this.leadingIcon,
-      this.onRadioSelected});
+      @required this.onRadioSelected});
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +32,6 @@ class MyRadioDialogTile extends StatelessWidget {
                 title,
                 groupValue,
                 options,
-                onSubmit: onSubmit,
                 onRadioSelected: onRadioSelected,
               );
             });

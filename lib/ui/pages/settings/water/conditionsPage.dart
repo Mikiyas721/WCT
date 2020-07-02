@@ -34,10 +34,7 @@ class ConditionsPage extends StatelessWidget {
                       ],
                       groupValue: bloc.getAge(snapshot.data),
                       trailing: bloc.getAge(snapshot.data),
-                      onSubmit: bloc.onAgeSubmitted,
-                      onRadioSelected: (String newValue) {
-                        bloc.setTempoAge(newValue);
-                      },
+                      onRadioSelected: bloc.onAgeChanged,
                     );
                   },
                 ),
@@ -53,7 +50,10 @@ class ConditionsPage extends StatelessWidget {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return TextFieldDialog(
-                                      title: 'Weight in Kgs', onSubmit: () {});
+                                      title: 'Weight in Kgs',
+                                      onValueChanged: bloc.onWeightEntered,
+
+                                  );
                                 });
                           },
                           trailing: bloc.getWeight(snapshot.data));
@@ -63,13 +63,12 @@ class ConditionsPage extends StatelessWidget {
                   builder:
                       (BuildContext context, AsyncSnapshot<String> snapshot) {
                     return MyRadioDialogTile(
-                      leadingIcon: Icons.local_drink,
-                      title: 'Other Drinks',
-                      options: ['Small', 'Medium', 'High'],
-                      groupValue: bloc.getOtherDrinks(snapshot.data),
-                      trailing: bloc.getOtherDrinks(snapshot.data),
-                      onSubmit: () {},
-                    );
+                        leadingIcon: Icons.local_drink,
+                        title: 'Other Drinks',
+                        options: ['Small', 'Medium', 'High'],
+                        groupValue: bloc.getOtherDrinks(snapshot.data),
+                        trailing: bloc.getOtherDrinks(snapshot.data),
+                        onRadioSelected: bloc.onOtherDrinksChanged);
                   },
                 ),
                 StreamBuilder(
@@ -87,7 +86,7 @@ class ConditionsPage extends StatelessWidget {
                         ],
                         groupValue: bloc.getMealFluid(snapshot.data),
                         trailing: bloc.getMealFluidTrailing(snapshot.data),
-                        onSubmit: () {},
+                        onRadioSelected: bloc.onMealFluidsChanged,
                       );
                     })
               ]).toList()),
