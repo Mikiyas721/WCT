@@ -57,7 +57,7 @@ class ConditionsBloc extends Disposable {
     String rawMealFluid;
     mealFluid == null
         ? rawMealFluid =
-        _mealFluidRepo.getPreference<String>(PreferenceKeys.mealFluid)
+            _mealFluidRepo.getPreference<String>(PreferenceKeys.mealFluid)
         : rawMealFluid = mealFluid;
     return rawMealFluid != null ? rawMealFluid.split('(')[0] : null;
   }
@@ -65,11 +65,13 @@ class ConditionsBloc extends Disposable {
   void onAgeChanged(String newValue) {
     _ageRepo.updateStream(StringModel(data: newValue));
     _ageRepo.setPreference<String>(PreferenceKeys.age, newValue);
+    fetchRecommended();
   }
 
   void onWeightEntered(String newValue) {
     _weightRepo.updateStream(StringModel(data: newValue));
     _weightRepo.setPreference<String>(PreferenceKeys.weight, newValue);
+    fetchRecommended();
   }
 
   void onOtherDrinksChanged(String newValue) {
@@ -83,9 +85,28 @@ class ConditionsBloc extends Disposable {
     _mealFluidRepo.setPreference<String>(PreferenceKeys.mealFluid, newValue);
   }
 
-  void fetchRecommended() {}
+  String fetchRecommended() {
+    //TODO Handle Exceptions
+    int age = mapAgeRange(_ageRepo.getPreference<String>(PreferenceKeys.age));
+    String weight = _weightRepo.getPreference<String>(PreferenceKeys.weight);
+    String recommendedAmount = '0.0';
+    if(weight!=null){
+      int weightInt = int.parse(weight == null ? '0' : weight);
+      recommendedAmount = ((weightInt * age) / 956.54).toString();
+      _recommendedRepo.updateStream(StringModel(data: recommendedAmount));
+    }
+    return recommendedAmount;
+  }
+
+  int mapAgeRange(String ageRange) {
+    if (ageRange == '< 30 Years')
+      return 40;
+    else if (ageRange == '30 - 55 Years')
+      return 35;
+    else
+      return 30;
+  }
 
   @override
-  void dispose() {
-  }
+  void dispose() {}
 }

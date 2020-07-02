@@ -11,7 +11,7 @@ class ConditionsPage extends StatelessWidget {
     return BlocProvider<ConditionsBloc>(
       blocFactory: () => ConditionsBloc(),
       builder: (BuildContext context, ConditionsBloc bloc) {
-        bloc.fetchRecommended();
+        String recommended = bloc.fetchRecommended();
         return DefaultTabController(
             length: 2,
             child: Scaffold(
@@ -50,9 +50,8 @@ class ConditionsPage extends StatelessWidget {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return TextFieldDialog(
-                                      title: 'Weight in Kgs',
-                                      onValueChanged: bloc.onWeightEntered,
-
+                                    title: 'Weight in Kgs',
+                                    onValueChanged: bloc.onWeightEntered,
                                   );
                                 });
                           },
@@ -94,7 +93,7 @@ class ConditionsPage extends StatelessWidget {
                 stream: bloc.recommendedStream,
                 builder:
                     (BuildContext context, AsyncSnapshot<String> snapshot) {
-                  return snapshot.data != null
+                  return recommended != null
                       ? Card(
                           shape: BeveledRectangleBorder(),
                           color: Theme.of(context).primaryColorLight,
@@ -104,7 +103,7 @@ class ConditionsPage extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: <Widget>[
                                 Text(
-                                  'Current recommended amount ${snapshot.data}',
+                                  'Current recommended amount ${snapshot.data == null ? recommended : snapshot.data}',
                                   style: Theme.of(context).textTheme.body2,
                                 )
                               ],
