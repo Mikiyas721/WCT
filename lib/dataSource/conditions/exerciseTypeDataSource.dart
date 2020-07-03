@@ -1,4 +1,4 @@
-import '../../models/conditions.dart';
+import '../../models/string.dart';
 import 'package:rxdart/rxdart.dart';
 import '../../core/repository.dart';
 

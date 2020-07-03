@@ -6,6 +6,7 @@ class PreferenceKeys {
   static final String mealFluid = 'MealFluid';
   static final String exerciseType = 'ExerciseType';
   static final String exerciseLength = 'ExerciseLength';
+  static final String soFar = 'SoFar';
   static final String disableNotification = 'DisableNotification';
   static final String nowExercising = 'NowExercising';
   static final String notification = 'Notification';

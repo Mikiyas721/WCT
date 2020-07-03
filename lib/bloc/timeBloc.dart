@@ -1,4 +1,4 @@
-import 'package:Nutracker/models/conditions.dart';
+import 'package:Nutracker/models/string.dart';
 
 import '../resources/preferenceKeys.dart';
 import 'package:get_it/get_it.dart';

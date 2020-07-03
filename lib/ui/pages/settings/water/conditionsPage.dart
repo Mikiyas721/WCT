@@ -105,38 +105,38 @@ class ConditionsPage extends StatelessWidget {
                 StreamBuilder(
                     stream: bloc.exerciseLengthStream,
                     builder:
-                    (BuildContext context, AsyncSnapshot<String> snapshot) {
-                  return MyTextFieldDialogTile(
-                    leadingIcon: Icons.timer,
-                    tileTitle: 'Exercise Length',
-                    dialogTitle: 'How long do you exercise per day',
-                    onValueChanged: bloc.onExerciseLengthChanged,
-                    trailing: bloc.getExerciseLength(snapshot.data),
-                  );
-                })
+                        (BuildContext context, AsyncSnapshot<String> snapshot) {
+                      return MyTextFieldDialogTile(
+                        leadingIcon: Icons.timer,
+                        tileTitle: 'Exercise Length',
+                        dialogTitle:
+                            'How long do you exercise per day, in Minutes',
+                        onValueChanged: bloc.onExerciseLengthChanged,
+                        trailing: bloc.getExerciseLength(snapshot.data),
+                      );
+                    })
               ]).toList()),
               //TODO Add daily physical engagement
               bottomSheet: StreamBuilder(
                 stream: bloc.recommendedStream,
                 builder:
-                    (BuildContext context, AsyncSnapshot<String> snapshot) {
+                    (BuildContext context, AsyncSnapshot<double> snapshot) {
                   return Card(
-                          shape: BeveledRectangleBorder(),
-                          color: Theme.of(context).primaryColorLight,
-                          margin: EdgeInsets.all(0),
-                          child: Padding(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: <Widget>[
-                                Text(bloc.getRecommendedString(snapshot.data),
-                                  style: Theme.of(context).textTheme.body2,
-                                )
-                              ],
-                            ),
-                            padding:
-                                EdgeInsets.only(left: 10, top: 10, bottom: 10),
-                          ));
-
+                      shape: BeveledRectangleBorder(),
+                      color: Theme.of(context).primaryColorLight,
+                      margin: EdgeInsets.all(0),
+                      child: Padding(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              bloc.getRecommendedString(),
+                              style: Theme.of(context).textTheme.body2,
+                            )
+                          ],
+                        ),
+                        padding: EdgeInsets.only(left: 10, top: 10, bottom: 10),
+                      ));
                 },
               ),
             ));

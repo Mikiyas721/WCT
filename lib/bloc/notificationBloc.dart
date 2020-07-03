@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import '../models/conditions.dart';
+import '../models/string.dart';
 import '../dataSource/notification/alarmDataSource.dart';
 import '../dataSource/notification/nowExercisingDataSource.dart';
 import '../dataSource/notification/notificationDataSource.dart';

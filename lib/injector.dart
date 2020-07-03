@@ -1,5 +1,5 @@
 import './models/boolean.dart';
-import './models/conditions.dart';
+import './models/string.dart';
 import './dataSource/themeDataSource.dart';
 import './models/theme.dart';
 import './dataSource/conditions/ageDataSource.dart';
@@ -19,6 +19,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'dataSource/conditions/exerciseLengthDataSource.dart';
 import 'dataSource/conditions/exerciseTypeDataSource.dart';
+import 'dataSource/conditions/soFarDataSource.dart';
+import 'models/double.dart';
 
 void inject() async {
   final preference = await SharedPreferences.getInstance();
@@ -39,7 +41,9 @@ void inject() async {
   GetIt.instance.registerLazySingleton<WeightRepo>(
       () => WeightRepo(BehaviorSubject<StringModel>()));
   GetIt.instance.registerLazySingleton<RecommendedRepo>(
-      () => RecommendedRepo(BehaviorSubject<StringModel>()));
+      () => RecommendedRepo(BehaviorSubject<DoubleModel>()));
+  GetIt.instance.registerLazySingleton<SoFarRepo>(
+          () => SoFarRepo(BehaviorSubject<DoubleModel>()));
 
   GetIt.instance.registerLazySingleton<DisableNotificationRepo>(
       () => DisableNotificationRepo(BehaviorSubject<BooleanModel>()));

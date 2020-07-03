@@ -1,7 +1,9 @@
+import '../dataSource/conditions/soFarDataSource.dart';
+import '../models/double.dart';
 import '../dataSource/conditions/exerciseLengthDataSource.dart';
 import '../dataSource/conditions/exerciseTypeDataSource.dart';
 import '../dataSource/conditions/recommendedDataSource.dart';
-import '../models/conditions.dart';
+import '../models/string.dart';
 import '../resources/preferenceKeys.dart';
 import '../core/utils/disposable.dart';
 import '../dataSource/conditions/ageDataSource.dart';
@@ -19,6 +21,7 @@ class ConditionsBloc extends Disposable {
   RecommendedRepo _recommendedRepo = GetIt.instance.get();
   ExerciseTypeRepo _exerciseTypeRepo = GetIt.instance.get();
   ExerciseLengthRepo _exerciseLengthRepo = GetIt.instance.get();
+  SoFarRepo _soFarRepo = GetIt.instance.get();
 
   Stream<String> get ageStream => _ageRepo.getStream<String>((value) => value);
 
@@ -31,13 +34,17 @@ class ConditionsBloc extends Disposable {
   Stream<String> get mealFluidStream =>
       _mealFluidRepo.getStream<String>((value) => value);
 
-  Stream<String> get recommendedStream =>
-      _recommendedRepo.getStream<String>((value) => value);
+  Stream<double> get recommendedStream =>
+      _recommendedRepo.getStream<double>((value) => value);
 
   Stream<String> get exerciseTypeStream =>
       _exerciseTypeRepo.getStream<String>((value) => value);
+
   Stream<String> get exerciseLengthStream =>
       _exerciseLengthRepo.getStream<String>((value) => value);
+
+  Stream<double> get soFarStream =>
+      _soFarRepo.getStream<double>((value) => value);
 
   String getAge(String age) {
     return age == null
@@ -116,6 +123,7 @@ class ConditionsBloc extends Disposable {
     _exerciseTypeRepo.updateStream(StringModel(data: newValue));
     _exerciseTypeRepo.setPreference<String>(
         PreferenceKeys.exerciseType, newValue);
+    getExerciseTimeRecommended();
   }
 
   void onExerciseLengthChanged(String newValue) {
@@ -123,6 +131,7 @@ class ConditionsBloc extends Disposable {
       _exerciseLengthRepo.updateStream(StringModel(data: newValue));
       _exerciseLengthRepo.setPreference<String>(
           PreferenceKeys.exerciseLength, newValue);
+      getExerciseTimeRecommended();
     }
   }
 
@@ -150,15 +159,55 @@ class ConditionsBloc extends Disposable {
       else if (mealFluid == "Very Much (Mainly fruits and Vegetables)")
         basicAmount -= 0.4;
       recommendedAmount = basicAmount.toString();
-      _recommendedRepo.updateStream(StringModel(data: recommendedAmount));
+      _recommendedRepo
+          .updateStream(DoubleModel(data: double.parse(recommendedAmount)));
     }
     return recommendedAmount;
   }
 
-  String getRecommendedString(String snapshot) {
-    String recommended = fetchRecommended();
-    recommended = recommended.substring(0, 4); //TODO Replace with Math round
+  String getExerciseTimeRecommended() {
+    String type =
+        _exerciseTypeRepo.getPreference<String>(PreferenceKeys.exerciseType);
+    double length = double.parse(_exerciseLengthRepo
+        .getPreference<String>(PreferenceKeys.exerciseLength));
+    double typeConstant = mapTypeConstant(type);
+    length /= getTypeLength(type);
+    String current = (length * typeConstant).toString();
+    _recommendedRepo.updateStream(DoubleModel(data: double.parse(current)));
+    return current;
+  }
+
+  String getRecommendedString() {
+    bool isNowExercising =
+        _exerciseTypeRepo.getPreference<bool>(PreferenceKeys.nowExercising);
+    String recommended;
+    isNowExercising == true
+        ? recommended = getExerciseTimeRecommended()
+        : recommended = fetchRecommended();
+    recommended.length > 5
+        ? recommended = recommended.substring(0, 5)
+        : recommended = recommended; //TODO Replace with Math round
     return 'Current recommended amount $recommended Ls';
+  }
+
+  void onOneCup() {
+    double takenSoFar = _soFarRepo.getPreference<double>(PreferenceKeys.soFar);
+    takenSoFar == null ? takenSoFar = 0 : takenSoFar = takenSoFar;
+    _soFarRepo.setPreference<double>(PreferenceKeys.soFar, takenSoFar += 0.25);
+    _soFarRepo.updateStream(DoubleModel(data: takenSoFar += 0.25));
+  }
+
+  void onTwoCup() {
+    double takenSoFar = _soFarRepo.getPreference<double>(PreferenceKeys.soFar);
+    takenSoFar == null ? takenSoFar = 0 : takenSoFar = takenSoFar;
+    _soFarRepo.setPreference<double>(PreferenceKeys.soFar, takenSoFar += 0.5);
+    _soFarRepo.updateStream(DoubleModel(data: takenSoFar += 0.5));
+  }
+
+  double progress(double snapShot) {
+    double soFar = _soFarRepo.getPreference<double>(PreferenceKeys.soFar);
+    soFar = snapShot == null ? soFar == null ? 0 : soFar : snapShot;
+    return (soFar / double.parse(fetchRecommended()));
   }
 
   int mapAgeRange(String ageRange) {
@@ -168,6 +217,24 @@ class ConditionsBloc extends Disposable {
       return 35;
     else
       return 30;
+  }
+
+  double mapTypeConstant(String type) {
+    if (type == 'A little')
+      return 0.8;
+    else if (type == 'Average')
+      return 1;
+    else
+      return 1.2;
+  }
+
+  double getTypeLength(String type) {
+    if (type == 'A little')
+      return 40;
+    else if (type == 'Average')
+      return 50;
+    else
+      return 60;
   }
 
   @override

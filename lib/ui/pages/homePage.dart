@@ -1,6 +1,8 @@
+import 'package:Nutracker/bloc/conditionsBloc.dart';
 import 'package:Nutracker/bloc/notificationBloc.dart';
 import 'package:Nutracker/ui/customWidgets/cup.dart';
 import 'package:fab_circular_menu/fab_circular_menu.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:toast/toast.dart';
 import '../../bloc/provider/provider.dart';
@@ -25,8 +27,33 @@ class HomePage extends StatelessWidget {
           ]),
         ),
         body: TabBarView(children: [
-          CustomPaint(
-            painter: Cup(),
+          BlocProvider<ConditionsBloc>(
+            blocFactory: () => ConditionsBloc(),
+            builder: (BuildContext context, ConditionsBloc bloc) {
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Padding(
+                      padding: EdgeInsets.all(20),
+                      child: StreamBuilder(
+                          stream:bloc.soFarStream,
+                          builder:
+                              (BuildContext context, AsyncSnapshot<double> snapshot) {
+                            return LinearProgressIndicator(
+                              value: bloc.progress(snapshot.data),
+                            );
+                          })),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      FlatButton(
+                          onPressed: bloc.onOneCup, child: Text('1 Cup')),
+                      FlatButton(onPressed: bloc.onTwoCup, child: Text('2 Cup'))
+                    ],
+                  )
+                ],
+              );
+            },
           ),
           Icon(
             Icons.fastfood,

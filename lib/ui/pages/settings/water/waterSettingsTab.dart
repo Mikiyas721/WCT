@@ -31,6 +31,7 @@ class WaterSettingsTab extends StatelessWidget {
                       leadingIcon: Icons.timer,
                       title: 'Time',
                       options: [
+                        'auto',
                         '20 Minutes',
                         '40 Minutes',
                         '60 Minutes',
