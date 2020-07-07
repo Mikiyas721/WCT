@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:get_it/get_it.dart';
 import './models/theme.dart';
 import './resources/preferenceKeys.dart';
@@ -14,6 +15,7 @@ import 'models/theme.dart';
 import 'resources/preferenceKeys.dart';
 
 void main() async {
+  //debugPaintSizeEnabled = true;
   WidgetsFlutterBinding.ensureInitialized();
   await inject();
   runApp(MyApp());

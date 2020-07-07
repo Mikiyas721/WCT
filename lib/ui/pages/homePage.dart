@@ -1,14 +1,18 @@
-import 'package:Nutracker/bloc/conditionsBloc.dart';
-import 'package:Nutracker/bloc/notificationBloc.dart';
-import 'package:Nutracker/ui/customWidgets/cup.dart';
+import 'package:Nutracker/ui/customWidgets/cupwidget.dart';
+
+import '../../ui/customWidgets/cup.dart';
+import '../../bloc/conditionsBloc.dart';
+import '../../bloc/notificationBloc.dart';
 import 'package:fab_circular_menu/fab_circular_menu.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:toast/toast.dart';
 import '../../bloc/provider/provider.dart';
 import '../../bloc/themeBloc.dart';
 
+// ignore: must_be_immutable
 class HomePage extends StatelessWidget {
+  Cup cup = Cup();
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -36,9 +40,9 @@ class HomePage extends StatelessWidget {
                   Padding(
                       padding: EdgeInsets.all(20),
                       child: StreamBuilder(
-                          stream:bloc.soFarStream,
-                          builder:
-                              (BuildContext context, AsyncSnapshot<double> snapshot) {
+                          stream: bloc.soFarStream,
+                          builder: (BuildContext context,
+                              AsyncSnapshot<double> snapshot) {
                             return LinearProgressIndicator(
                               value: bloc.progress(snapshot.data),
                             );
@@ -47,18 +51,25 @@ class HomePage extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
                       FlatButton(
-                          onPressed: bloc.onOneCup, child: Text('1 Cup')),
-                      FlatButton(onPressed: bloc.onTwoCup, child: Text('2 Cup'))
+                          onPressed: () {
+                            cup.decrease(0.1);
+                            bloc.onOneCup();
+                          },
+                          child: Text('1 Cup')),
+                      FlatButton(
+                          onPressed: () {
+                            cup.refill();
+                            bloc.onTwoCup();
+                          },
+                          child: Text('2 Cup'))
                     ],
                   )
                 ],
               );
             },
           ),
-          Icon(
-            Icons.fastfood,
-            size: 70,
-            semanticLabel: 'Food',
+          CustomPaint(
+            painter: cup,
           )
         ]),
         floatingActionButton: FabCircularMenu(
