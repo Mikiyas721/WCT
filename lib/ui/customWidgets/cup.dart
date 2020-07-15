@@ -4,13 +4,13 @@ class Cup extends CustomPainter {
   double constant = 1;
 
   Cup({double intake, bool refill}) {
-    if (refill != null && refill)
+   /* if (refill != null && refill)
       constant = 1;
     else {
       if (constant <= 2.2) {
         constant += intake;
       }
-    }
+    }*/
   }
 
   @override
