@@ -1,3 +1,5 @@
+import 'package:Nutracker/ui/customWidgets/myNumberPickerTile.dart';
+
 import '../../../customWidgets/myTextFieldDialogTile.dart';
 import '../../../../bloc/conditionsBloc.dart';
 import '../../../../bloc/provider/provider.dart';
@@ -40,13 +42,16 @@ class ConditionsPage extends StatelessWidget {
                     stream: bloc.weightStream,
                     builder:
                         (BuildContext context, AsyncSnapshot<String> snapshot) {
-                      return MyTextFieldDialogTile(
-                          //TODO Replace with a Sliding Number Picker
-                          tileTitle: 'Weight',
-                          dialogTitle: 'Weight in Kgs',
-                          leadingIcon: Icons.linear_scale,
-                          onValueChanged: bloc.onWeightEntered,
-                          trailing: bloc.getWeight(snapshot.data));
+                      return MyNumberPickerTile(
+                        tileTitle: 'Weight',
+                        dialogTitle: 'Weight in Kgs',
+                        leadingIcon: Icons.linear_scale,
+                        initialValue: int.parse(bloc.getWeight(snapshot.data)),
+                        minValue: 30,
+                        maxValue: 300,
+                        onValueChanged: bloc.onWeightChanged,
+                        trailing: bloc.getWeight(snapshot.data),
+                      );
                     }),
                 StreamBuilder(
                   stream: bloc.otherDrinksStream,
@@ -106,11 +111,14 @@ class ConditionsPage extends StatelessWidget {
                     stream: bloc.exerciseLengthStream,
                     builder:
                         (BuildContext context, AsyncSnapshot<String> snapshot) {
-                      return MyTextFieldDialogTile(
-                        leadingIcon: Icons.timer,
+                      return MyNumberPickerTile(
                         tileTitle: 'Exercise Length',
-                        dialogTitle:
-                            'How long do you exercise per day, in Minutes',
+                        dialogTitle: 'Exercise length per day, in Minutes',
+                        leadingIcon: Icons.timer,
+                        initialValue: int.parse(bloc.getExerciseLength(snapshot.data)),
+                        step: 45,
+                        minValue: 45,
+                        maxValue: 270,
                         onValueChanged: bloc.onExerciseLengthChanged,
                         trailing: bloc.getExerciseLength(snapshot.data),
                       );

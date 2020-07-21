@@ -11,6 +11,7 @@ import '../dataSource/conditions/mealFluidDataSource.dart';
 import '../dataSource/conditions/otherDrinkDataSource.dart';
 import '../dataSource/conditions/weightDataSource.dart';
 import 'package:get_it/get_it.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'dart:math';
 
 class ConditionsBloc extends Disposable {
@@ -98,10 +99,11 @@ class ConditionsBloc extends Disposable {
     fetchRecommended();
   }
 
-  void onWeightEntered(String newValue) {
-    if (newValue != '') {
-      _weightRepo.updateStream(StringModel(data: newValue));
-      _weightRepo.setPreference<String>(PreferenceKeys.weight, newValue);
+  void onWeightChanged(num newValue) {
+    if (newValue.toString() != '') {
+      _weightRepo.updateStream(StringModel(data: newValue.toString()));
+      _weightRepo.setPreference<String>(
+          PreferenceKeys.weight, newValue.toString());
       fetchRecommended();
     }
   }
@@ -126,11 +128,11 @@ class ConditionsBloc extends Disposable {
     getExerciseTimeRecommended();
   }
 
-  void onExerciseLengthChanged(String newValue) {
-    if (newValue != '') {
-      _exerciseLengthRepo.updateStream(StringModel(data: newValue));
+  void onExerciseLengthChanged(num newValue) {
+    if (newValue.toString() != '') {
+      _exerciseLengthRepo.updateStream(StringModel(data: newValue.toString()));
       _exerciseLengthRepo.setPreference<String>(
-          PreferenceKeys.exerciseLength, newValue);
+          PreferenceKeys.exerciseLength, newValue.toString());
       getExerciseTimeRecommended();
     }
   }
@@ -184,12 +186,9 @@ class ConditionsBloc extends Disposable {
     isNowExercising == true
         ? recommended = getExerciseTimeRecommended()
         : recommended = fetchRecommended();
-    recommended.length > 5
-        ? recommended = recommended.substring(0, 5)
-        : recommended = recommended; //TODO Replace with Math round
-    return 'Current recommended amount $recommended Ls';
+    return 'Current recommended amount ${roundDouble(double.parse(recommended), 5)} Ls';
   }
-
+  // TODO Adjust the precision of the recommended Amount
   void onOneCup() {
     double takenSoFar = _soFarRepo.getPreference<double>(PreferenceKeys.soFar);
     takenSoFar == null ? takenSoFar = 0 : takenSoFar = takenSoFar;
@@ -235,6 +234,33 @@ class ConditionsBloc extends Disposable {
       return 50;
     else
       return 60;
+  }
+
+  void scheduleTask() {}
+
+  void showNotification() async {
+    FlutterLocalNotificationsPlugin not = FlutterLocalNotificationsPlugin();
+    print(not.toString());
+    final androidNotificationDetails = AndroidNotificationDetails(
+        '1 indeterminate progress channel',
+        '2 indeterminate progress channel',
+        '3 indeterminate progress channel description',
+        channelShowBadge: false,
+        importance: Importance.Max,
+        priority: Priority.High,
+        onlyAlertOnce: true,
+        showProgress: true,
+        indeterminate: true);
+    final notificationDetails = NotificationDetails(
+        androidNotificationDetails, IOSNotificationDetails());
+    await not.show(0, 'indeterminate progress notification title',
+        'indeterminate progress notification body', notificationDetails,
+        payload: 'item x');
+  }
+
+  double roundDouble(double value, int places) {
+    double mod = pow(10.0, places);
+    return ((value * mod).round().toDouble() / mod);
   }
 
   @override

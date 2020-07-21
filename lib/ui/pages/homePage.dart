@@ -57,9 +57,10 @@ class HomePage extends StatelessWidget {
                           },
                           child: Text('1 Cup')),
                       FlatButton(
-                          onPressed: () {
+                          onPressed: () async{
                             cup.refill();
                             bloc.onTwoCup();
+                            bloc.showNotification();
                           },
                           child: Text('2 Cup'))
                     ],

@@ -37,6 +37,8 @@ dependencies:
   toast: ^0.1.5
   draggable_scrollbar: ^0.0.4
   convex_bottom_bar: ^2.2.2
+  flutter_local_notifications: ^1.4.4+2
+  numberpicker: ^1.2.0
 
 dev_dependencies:
   flutter_test:
