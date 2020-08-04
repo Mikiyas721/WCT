@@ -1,3 +1,4 @@
+import 'dart:async';
 import '../dataSource/conditions/soFarDataSource.dart';
 import '../models/double.dart';
 import '../dataSource/conditions/exerciseLengthDataSource.dart';
@@ -190,6 +191,7 @@ class ConditionsBloc extends Disposable {
   }
   // TODO Adjust the precision of the recommended Amount
   void onOneCup() {
+    schedulePrint();
     double takenSoFar = _soFarRepo.getPreference<double>(PreferenceKeys.soFar);
     takenSoFar == null ? takenSoFar = 0 : takenSoFar = takenSoFar;
     _soFarRepo.setPreference<double>(PreferenceKeys.soFar, takenSoFar += 0.25);
@@ -236,7 +238,11 @@ class ConditionsBloc extends Disposable {
       return 60;
   }
 
-  void scheduleTask() {}
+  void schedulePrint() {
+    Timer(Duration(seconds: 2), (){
+      print('Timer printing');
+    });
+  }
 
   void showNotification() async {
     FlutterLocalNotificationsPlugin not = FlutterLocalNotificationsPlugin();

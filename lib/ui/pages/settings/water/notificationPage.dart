@@ -1,3 +1,5 @@
+import '../../../../ui/customWidgets/mySettingItem.dart';
+import '../../../../ui/customWidgets/myTimePickerDialogTile.dart';
 import '../../../../bloc/notificationBloc.dart';
 import '../../../../bloc/provider/provider.dart';
 import '../../../customWidgets/myRadioDialogTile.dart';
@@ -68,6 +70,51 @@ class NotificationPage extends StatelessWidget {
                       onRadioSelected: bloc.onAlarmChanged,
                     );
                   },
+                ),
+                Card(
+                  color: Theme.of(context).scaffoldBackgroundColor,
+                  margin: EdgeInsets.all(0),
+                  shape: BeveledRectangleBorder(),
+                  child: Column(
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.only(top: 5, left: 5),
+                        child: Text('Sleeping Time'),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(left: 20),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            StreamBuilder(
+                              stream: null,
+                              builder: (BuildContext context,
+                                  AsyncSnapshot snapshot) {
+                                return MyTimePickerDialogTile(
+                                  title: 'From',
+                                  dialogTitle: 'Time to bed',
+                                  trailing: '12:02 AM',
+                                  onTimeChanged: (DateTime dateTime) {},
+                                );
+                              },
+                            ),
+                            StreamBuilder(
+                              stream: null,
+                              builder: (BuildContext context,
+                                  AsyncSnapshot snapshot) {
+                                return MyTimePickerDialogTile(
+                                  title: 'To',
+                                  dialogTitle: 'Time from bed',
+                                  trailing: '12:02 AM',
+                                  onTimeChanged: (DateTime dateTime) {},
+                                );
+                              },
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
                 )
               ]).toList(),
             ),

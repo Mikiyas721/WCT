@@ -1,5 +1,3 @@
-import 'package:Nutracker/ui/customWidgets/cupwidget.dart';
-
 import '../../ui/customWidgets/cup.dart';
 import '../../bloc/conditionsBloc.dart';
 import '../../bloc/notificationBloc.dart';
@@ -57,7 +55,7 @@ class HomePage extends StatelessWidget {
                           },
                           child: Text('1 Cup')),
                       FlatButton(
-                          onPressed: () async{
+                          onPressed: () async {
                             cup.refill();
                             bloc.onTwoCup();
                             bloc.showNotification();

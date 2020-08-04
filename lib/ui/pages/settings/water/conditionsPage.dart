@@ -1,6 +1,4 @@
-import 'package:Nutracker/ui/customWidgets/myNumberPickerTile.dart';
-
-import '../../../customWidgets/myTextFieldDialogTile.dart';
+import '../../../customWidgets/myNumberPickerTile.dart';
 import '../../../../bloc/conditionsBloc.dart';
 import '../../../../bloc/provider/provider.dart';
 import '../../../customWidgets/myRadioDialogTile.dart';
@@ -90,7 +88,7 @@ class ConditionsPage extends StatelessWidget {
                   child: Padding(
                     padding: EdgeInsets.all(8),
                     child: Text(
-                        "If you exercise, please fill the conditions below.\nWhen you start exercising enable the 'Now Exercising' Mood."),
+                        "If you exercise, please fill the conditions below.\nWhen you start exercising enable the 'Now Exercising' Mode."),
                   ),
                 ),
                 StreamBuilder(
@@ -115,7 +113,8 @@ class ConditionsPage extends StatelessWidget {
                         tileTitle: 'Exercise Length',
                         dialogTitle: 'Exercise length per day, in Minutes',
                         leadingIcon: Icons.timer,
-                        initialValue: int.parse(bloc.getExerciseLength(snapshot.data)),
+                        initialValue:
+                            int.parse(bloc.getExerciseLength(snapshot.data)),
                         step: 45,
                         minValue: 45,
                         maxValue: 270,
@@ -129,6 +128,20 @@ class ConditionsPage extends StatelessWidget {
                 stream: bloc.recommendedStream,
                 builder:
                     (BuildContext context, AsyncSnapshot<double> snapshot) {
+                  return BottomAppBar(
+                      color: Theme.of(context).primaryColorLight,
+                      child: Padding(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              bloc.getRecommendedString(),
+                              style: Theme.of(context).textTheme.body2,
+                            )
+                          ],
+                        ),
+                        padding: EdgeInsets.all(10),
+                      ));
                   return Card(
                       shape: BeveledRectangleBorder(),
                       color: Theme.of(context).primaryColorLight,

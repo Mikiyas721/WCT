@@ -9,7 +9,7 @@ class MySettingItem extends StatelessWidget {
 
   MySettingItem({
     @required this.title,
-    @required this.leadingIcon,
+    this.leadingIcon,
     this.onTap,
     this.trailing,
     this.enabled = true,
@@ -19,7 +19,7 @@ class MySettingItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       enabled: enabled,
-      leading: Icon(
+      leading: leadingIcon==null?null:Icon(
         leadingIcon,
       ),
       title: Text(
