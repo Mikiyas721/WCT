@@ -161,6 +161,7 @@ class ConditionsBloc extends Disposable {
         basicAmount -= 0.2;
       else if (mealFluid == "Very Much (Mainly fruits and Vegetables)")
         basicAmount -= 0.4;
+      basicAmount = roundDouble(basicAmount, 2);
       recommendedAmount = basicAmount.toString();
       _recommendedRepo
           .updateStream(DoubleModel(data: double.parse(recommendedAmount)));
@@ -174,21 +175,14 @@ class ConditionsBloc extends Disposable {
     double length = double.parse(_exerciseLengthRepo
         .getPreference<String>(PreferenceKeys.exerciseLength));
     double typeConstant = mapTypeConstant(type);
+    double currentAmount;
     length /= getTypeLength(type);
-    String current = (length * typeConstant).toString();
-    _recommendedRepo.updateStream(DoubleModel(data: double.parse(current)));
-    return current;
+    currentAmount = length * typeConstant;
+    currentAmount = ((currentAmount/0.25).round())*0.25;
+    _recommendedRepo.updateStream(DoubleModel(data: currentAmount));
+    return currentAmount.toString();
   }
 
-  String getRecommendedString() {
-    bool isNowExercising =
-        _exerciseTypeRepo.getPreference<bool>(PreferenceKeys.nowExercising);
-    String recommended;
-    isNowExercising == true
-        ? recommended = getExerciseTimeRecommended()
-        : recommended = fetchRecommended();
-    return 'Current recommended amount ${roundDouble(double.parse(recommended), 5)} Ls';
-  }
   // TODO Adjust the precision of the recommended Amount
   void onOneCup() {
     schedulePrint();
@@ -266,7 +260,11 @@ class ConditionsBloc extends Disposable {
 
   double roundDouble(double value, int places) {
     double mod = pow(10.0, places);
-    return ((value * mod).round().toDouble() / mod);
+    double number =  ((value * mod).round().toDouble() / mod);
+    return ((number/0.25).round())*0.25; //Multiple of a cup
+  }
+  bool isNowExercising(){
+    return false;
   }
 
   @override

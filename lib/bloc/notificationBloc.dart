@@ -4,6 +4,7 @@ import '../dataSource/notification/alarmDataSource.dart';
 import '../dataSource/notification/nowExercisingDataSource.dart';
 import '../dataSource/notification/notificationDataSource.dart';
 import '../dataSource/notification/popupDataSource.dart';
+import '../dataSource/notification/sleepTimeRepo.dart';
 import '../models/boolean.dart';
 import '../resources/preferenceKeys.dart';
 import 'package:get_it/get_it.dart';
@@ -16,6 +17,7 @@ class NotificationBloc extends Disposable {
   NotificationRepo _notificationRepo = GetIt.instance.get();
   PopUpRepo _popUpRepo = GetIt.instance.get();
   AlarmRepo _alarmRepo = GetIt.instance.get();
+  SleepTimeRepo _sleepTimeRepo = GetIt.instance.get();
 
   Stream<bool> get disableNotificationStream =>
       _disableNotificationRepo.getStream<bool>((newValue) => newValue);
@@ -31,6 +33,9 @@ class NotificationBloc extends Disposable {
 
   Stream<String> get alarmStream =>
       _alarmRepo.getStream<String>((newValue) => newValue);
+
+  Stream<String> get sleepTimeStream =>
+      _sleepTimeRepo.getStream<String>((newValue) => newValue);
 
   void onDisableTap(bool newValue) {
     _disableNotificationRepo.updateStream(BooleanModel(newValue));
@@ -93,10 +98,24 @@ class NotificationBloc extends Disposable {
     String newAlarm;
     if (alarmState == "Silent")
       newAlarm = "Vibrate";
-    else if (alarmState == "Vibrate") newAlarm = "Sound";
+    else if (alarmState == "Vibrate")
+      newAlarm = "Sound";
     else if (alarmState == "Sound") newAlarm = "Silent";
     _alarmRepo.updateStream(StringModel(data: newAlarm));
     _alarmRepo.setPreference<String>(PreferenceKeys.alarm, newAlarm);
+  }
+
+  void onToBedChanged(DateTime dateTime) {
+  }
+
+  void onFromBedChanged(DateTime dateTime) {}
+
+  String getFromBedTrailing() {
+    return '12:00 AM';
+  }
+
+  String getToBedTrailing() {
+    return '6:00 AM';
   }
 
   IconData getNotificationIcon(String snapShot) {

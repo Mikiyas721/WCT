@@ -132,31 +132,32 @@ class ConditionsPage extends StatelessWidget {
                       color: Theme.of(context).primaryColorLight,
                       child: Padding(
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
                           children: <Widget>[
-                            Text(
-                              bloc.getRecommendedString(),
-                              style: Theme.of(context).textTheme.body2,
+                            Padding(
+                              padding: EdgeInsets.only(
+                                  left:
+                                      MediaQuery.of(context).size.width * 0.18),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Text(
+                                    'Current recommended amount : ',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  Text(
+                                    'Regular - ${bloc.fetchRecommended()} Ls\nExercising - ${bloc.getExerciseTimeRecommended()} Ls',
+                                    style:
+                                        TextStyle(fontStyle: FontStyle.italic),
+                                  ),
+                                ],
+                              ),
                             )
                           ],
                         ),
                         padding: EdgeInsets.all(10),
-                      ));
-                  return Card(
-                      shape: BeveledRectangleBorder(),
-                      color: Theme.of(context).primaryColorLight,
-                      margin: EdgeInsets.all(0),
-                      child: Padding(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            Text(
-                              bloc.getRecommendedString(),
-                              style: Theme.of(context).textTheme.body2,
-                            )
-                          ],
-                        ),
-                        padding: EdgeInsets.only(left: 10, top: 10, bottom: 10),
                       ));
                 },
               ),

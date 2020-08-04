@@ -87,26 +87,26 @@ class NotificationPage extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             StreamBuilder(
-                              stream: null,
+                              stream: bloc.sleepTimeStream,
                               builder: (BuildContext context,
                                   AsyncSnapshot snapshot) {
                                 return MyTimePickerDialogTile(
                                   title: 'From',
                                   dialogTitle: 'Time to bed',
-                                  trailing: '12:02 AM',
-                                  onTimeChanged: (DateTime dateTime) {},
+                                  trailing: bloc.getToBedTrailing(),
+                                  onTimeChanged: bloc.onToBedChanged,
                                 );
                               },
                             ),
                             StreamBuilder(
-                              stream: null,
+                              stream: bloc.sleepTimeStream,
                               builder: (BuildContext context,
                                   AsyncSnapshot snapshot) {
                                 return MyTimePickerDialogTile(
                                   title: 'To',
                                   dialogTitle: 'Time from bed',
-                                  trailing: '12:02 AM',
-                                  onTimeChanged: (DateTime dateTime) {},
+                                  trailing: bloc.getFromBedTrailing(),
+                                  onTimeChanged: bloc.onFromBedChanged,
                                 );
                               },
                             ),

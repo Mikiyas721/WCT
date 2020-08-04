@@ -20,6 +20,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dataSource/conditions/exerciseLengthDataSource.dart';
 import 'dataSource/conditions/exerciseTypeDataSource.dart';
 import 'dataSource/conditions/soFarDataSource.dart';
+import 'dataSource/notification/sleepTimeRepo.dart';
 import 'models/double.dart';
 
 void inject() async {
@@ -55,6 +56,8 @@ void inject() async {
       () => PopUpRepo(BehaviorSubject<BooleanModel>()));
   GetIt.instance.registerLazySingleton<AlarmRepo>(
       () => AlarmRepo(BehaviorSubject<StringModel>()));
+  GetIt.instance.registerLazySingleton<SleepTimeRepo>(
+          () => SleepTimeRepo(BehaviorSubject<StringModel>()));
   GetIt.instance.registerLazySingleton<TimeRepo>(
       () => TimeRepo(BehaviorSubject<StringModel>()));
 }
