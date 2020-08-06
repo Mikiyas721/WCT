@@ -49,16 +49,17 @@ class HomePage extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
                       FlatButton(
-                          onPressed: () {
+                          onPressed: () async {
                             cup.decrease(0.1);
                             bloc.onOneCup();
+                            await bloc.notification();
                           },
                           child: Text('1 Cup')),
                       FlatButton(
                           onPressed: () async {
                             cup.refill();
                             bloc.onTwoCup();
-                            bloc.showNotification();
+                            await bloc.notificationAfterSec();
                           },
                           child: Text('2 Cup'))
                     ],
