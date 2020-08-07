@@ -78,8 +78,20 @@ class NotificationPage extends StatelessWidget {
                   child: Column(
                     children: <Widget>[
                       Padding(
-                        padding: EdgeInsets.only(top: 5, left: 5),
-                        child: Text('Sleeping Time'),
+                        padding: EdgeInsets.only(top: 5, left: 100, right: 100),
+                        child: Column(children: <Widget>[
+                          Text('Sleeping Time'),
+                          StreamBuilder(
+                            stream: bloc.repo24Stream,
+                            builder: (BuildContext context,
+                                AsyncSnapshot<bool> snapshot) {
+                              return SwitchListTile(
+                                  title: Text('24hrs'),
+                                  value: bloc.is24Enabled(snapshot.data),
+                                  onChanged: bloc.on24Changed);
+                            },
+                          )
+                        ]),
                       ),
                       Padding(
                         padding: EdgeInsets.only(left: 20),
@@ -89,24 +101,30 @@ class NotificationPage extends StatelessWidget {
                             StreamBuilder(
                               stream: bloc.sleepTimeStream,
                               builder: (BuildContext context,
-                                  AsyncSnapshot snapshot) {
+                                  AsyncSnapshot<String> snapshot) {
                                 return MyTimePickerDialogTile(
                                   title: 'From',
-                                  dialogTitle: 'Time to bed',
-                                  trailing: bloc.getToBedTrailing(),
-                                  onTimeChanged: bloc.onToBedChanged,
+                                  dialogTitle: 'Time from bed',
+                                  time: bloc.mapTime(
+                                      bloc.getFromBedTrailing(snapshot.data)),
+                                  trailing:
+                                      bloc.getFromBedTrailing(snapshot.data),
+                                  onTimeChanged: bloc.onFromBedChanged,
                                 );
                               },
                             ),
                             StreamBuilder(
                               stream: bloc.sleepTimeStream,
                               builder: (BuildContext context,
-                                  AsyncSnapshot snapshot) {
+                                  AsyncSnapshot<String> snapshot) {
                                 return MyTimePickerDialogTile(
                                   title: 'To',
-                                  dialogTitle: 'Time from bed',
-                                  trailing: bloc.getFromBedTrailing(),
-                                  onTimeChanged: bloc.onFromBedChanged,
+                                  dialogTitle: 'Time to bed',
+                                  time: bloc.mapTime(
+                                      bloc.getToBedTrailing(snapshot.data)),
+                                  trailing:
+                                      bloc.getToBedTrailing(snapshot.data),
+                                  onTimeChanged: bloc.onToBedChanged,
                                 );
                               },
                             ),

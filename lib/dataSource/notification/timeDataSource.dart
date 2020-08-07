@@ -1,7 +1,7 @@
-import '../models/string.dart';
+import '../../models/string.dart';
 import 'package:rxdart/rxdart.dart';
-import '../core/jsonModel.dart';
-import '../core/repository.dart';
+import '../../core/jsonModel.dart';
+import '../../core/repository.dart';
 
 class TimeRepo extends ItemRepo<StringModel> {
   TimeRepo(BehaviorSubject<JSONModel> subject) : super(subject);

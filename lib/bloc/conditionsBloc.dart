@@ -296,7 +296,7 @@ class ConditionsBloc extends Disposable {
     NotificationDetails notificationDetails =
     NotificationDetails(androidNotificationDetails, iosNotificationDetails);
     await flutterLocalNotificationsPlugin.show(
-        0, 'Hello there', 'please subscribe my channel', notificationDetails);
+        0, 'Nutracker', 'Time to take a drink', notificationDetails);
   }
 
   Future<void> notificationAfterSec() async {

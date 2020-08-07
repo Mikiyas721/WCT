@@ -2,7 +2,7 @@ import 'package:Nutracker/models/string.dart';
 
 import '../resources/preferenceKeys.dart';
 import 'package:get_it/get_it.dart';
-import '../dataSource/timeDataSource.dart';
+import '../dataSource/notification/timeDataSource.dart';
 import '../core/utils/disposable.dart';
 
 class TimeBloc extends Disposable {

@@ -13,4 +13,6 @@ class PreferenceKeys {
   static final String popupNotification = 'PopupNotification';
   static final String alarm = 'Alarm';
   static final String time = 'Time';
+  static final String sleepingTime = 'SleepingTime';
+  static final String is24 = 'Is24';
 }

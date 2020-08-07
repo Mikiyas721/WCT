@@ -1,3 +1,4 @@
+import '../dataSource/notification/24DataSource.dart';
 import 'package:flutter/material.dart';
 import '../models/string.dart';
 import '../dataSource/notification/alarmDataSource.dart';
@@ -18,6 +19,7 @@ class NotificationBloc extends Disposable {
   PopUpRepo _popUpRepo = GetIt.instance.get();
   AlarmRepo _alarmRepo = GetIt.instance.get();
   SleepTimeRepo _sleepTimeRepo = GetIt.instance.get();
+  Repo24 _repo24 = GetIt.instance.get();
 
   Stream<bool> get disableNotificationStream =>
       _disableNotificationRepo.getStream<bool>((newValue) => newValue);
@@ -36,6 +38,9 @@ class NotificationBloc extends Disposable {
 
   Stream<String> get sleepTimeStream =>
       _sleepTimeRepo.getStream<String>((newValue) => newValue);
+
+  Stream<bool> get repo24Stream =>
+      _repo24.getStream<bool>((newValue) => newValue);
 
   void onDisableTap(bool newValue) {
     _disableNotificationRepo.updateStream(BooleanModel(newValue));
@@ -105,17 +110,46 @@ class NotificationBloc extends Disposable {
     _alarmRepo.setPreference<String>(PreferenceKeys.alarm, newAlarm);
   }
 
+  void on24Changed(bool newValue) {
+    _repo24.updateStream(BooleanModel(newValue));
+    _repo24.setPreference<bool>(PreferenceKeys.is24, newValue);
+  }
+
+  bool is24Enabled(bool newValue) {
+    final saved = _repo24.getPreference<bool>(PreferenceKeys.is24);
+    return newValue == null ? saved == null ? true : saved : newValue;
+  }
+
+  List<String> getTimeString({String x}) {
+    String saved =
+        _sleepTimeRepo.getPreference<String>(PreferenceKeys.sleepingTime);
+    return x == null
+        ? saved == null ? ['10:00-PM', '06:00-AM'] : saved.split('|')
+        : x.split('|');
+  }
+
+  void onFromBedChanged(DateTime dateTime) {
+    String fromBed = '${getTimeString()[0]}|${getTimeInMeridian(dateTime)}';
+    _sleepTimeRepo.updateStream(StringModel(data: fromBed));
+    _sleepTimeRepo.setPreference<String>(PreferenceKeys.sleepingTime, fromBed);
+  }
+
   void onToBedChanged(DateTime dateTime) {
+    String toBed = '${getTimeInMeridian(dateTime)}|${getTimeString()[1]}';
+    _sleepTimeRepo.updateStream(StringModel(data: toBed));
+    _sleepTimeRepo.setPreference<String>(PreferenceKeys.sleepingTime, toBed);
   }
 
-  void onFromBedChanged(DateTime dateTime) {}
-
-  String getFromBedTrailing() {
-    return '12:00 AM';
+  String getFromBedTrailing(String snapShot) {
+    return snapShot == null
+        ? getTimeString()[0]
+        : getTimeString(x: snapShot)[0];
   }
 
-  String getToBedTrailing() {
-    return '6:00 AM';
+  String getToBedTrailing(String snapShot) {
+    return snapShot == null
+        ? getTimeString()[1]
+        : getTimeString(x: snapShot)[1];
   }
 
   IconData getNotificationIcon(String snapShot) {
@@ -127,6 +161,30 @@ class NotificationBloc extends Disposable {
       return Icons.volume_up;
     else
       return Icons.notifications;
+  }
+
+  String getTimeInMeridian(DateTime dateTime) {
+    int hour = dateTime.hour;
+    if (hour == 0)
+      return '${12}:${dateTime.minute}-AM';
+    else if (hour <= 12)
+      return '$hour:${dateTime.minute}-AM';
+    else
+      return '${hour - 12}:${dateTime.minute}-PM';
+  }
+
+  DateTime mapTime(String timeString) {
+    List<String> initial = timeString.split('-');
+    List<String> time = initial[0].split(':');
+    final now = DateTime.now();
+    if (time[0] == '0' || time[0] == '12')
+      return DateTime(now.year, now.month, now.day, 12, int.parse(time[1]));
+    else if (initial[1] == 'AM') {
+      return DateTime(
+          now.year, now.month, now.day, int.parse(time[0]), int.parse(time[1]));
+    }
+    return DateTime(now.year, now.month, now.day, int.parse(time[0]) - 12,
+        int.parse(time[1]));
   }
 
   @override
