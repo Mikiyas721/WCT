@@ -32,16 +32,15 @@ class HomePage extends StatelessWidget {
           BlocProvider<ConditionsBloc>(
             blocFactory: () => ConditionsBloc(),
             builder: (BuildContext context, ConditionsBloc bloc) {
-              return Row(mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
+              return Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
                 CustomPaint(
                   painter: cup,
-                  size: Size(150,620),
+                  size: Size(180, 620),
                 ),
                 Card(
                     color: Theme.of(context).primaryColorLight,
                     child: Padding(
-                      padding: EdgeInsets.only(left: 8, top: 8),
+                      padding: EdgeInsets.all(8),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -82,20 +81,21 @@ class HomePage extends StatelessWidget {
                               builder: (BuildContext context,
                                   AsyncSnapshot snapshot) {
                                 return Text(
-                                  'After {}\nAmount {}',
+                                  'After {}\nAmount {}\n',
                                   style: TextStyle(fontStyle: FontStyle.italic),
                                 );
                               }),
                           Row(
                             mainAxisSize: MainAxisSize.min,
                             children: <Widget>[
-                              FlatButton(
-                                  onPressed: () async {
-                                    cup.decrease(0.1);
-                                    bloc.onOneCup();
+                              IconButton(
+                                  icon: Icon(Icons.local_drink),
+                                  onPressed: () {
+                                    if (cup.decrease(0.1)) {
+                                      bloc.onOneCup();
+                                    }
                                     bloc.scheduleNotification();
-                                  },
-                                  child: Text('1 Cup')),
+                                  }),
                               FlatButton(
                                   onPressed: () async {
                                     cup.refill();
@@ -111,7 +111,10 @@ class HomePage extends StatelessWidget {
               ]);
             },
           ),
-          Icon(Icons.fastfood, size: 20,)
+          Icon(
+            Icons.fastfood,
+            size: 20,
+          )
         ]),
         floatingActionButton: FabCircularMenu(
           children: [

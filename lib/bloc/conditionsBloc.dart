@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'package:audioplayers/audio_cache.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/cupertino.dart';
 import '../dataSource/conditions/soFarDataSource.dart';
 import '../models/double.dart';
@@ -189,6 +191,8 @@ class ConditionsBloc extends Disposable {
 
   // TODO Adjust the precision of the recommended Amount
   void onOneCup() {
+    AudioCache audioPlayer = AudioCache();
+    audioPlayer.play('Water.mp3');
     double takenSoFar = _soFarRepo.getPreference<double>(PreferenceKeys.soFar);
     takenSoFar == null ? takenSoFar = 0 : takenSoFar = takenSoFar;
     _soFarRepo.setPreference<double>(PreferenceKeys.soFar, takenSoFar += 0.25);

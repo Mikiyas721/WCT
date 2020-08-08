@@ -40,6 +40,7 @@ dependencies:
   flutter_local_notifications: ^1.4.4+2
   numberpicker: ^1.2.0
   flutter_time_picker_spinner: ^1.0.6+1
+  audioplayers: ^0.15.1
 
 
 dev_dependencies:
@@ -59,7 +60,7 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/banana.jpg
+    - assets/Water.mp3
 
   # To add assets to your application, add an assets section, like this:
   # assets:
