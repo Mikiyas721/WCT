@@ -17,7 +17,6 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'dart:math';
 import 'package:flutter/material.dart';
 
-
 class ConditionsBloc extends Disposable {
   AgeRepo _ageRepo = GetIt.instance.get();
   WeightRepo _weightRepo = GetIt.instance.get();
@@ -183,7 +182,7 @@ class ConditionsBloc extends Disposable {
     double currentAmount;
     length /= getTypeLength(type);
     currentAmount = length * typeConstant;
-    currentAmount = ((currentAmount/0.25).round())*0.25;
+    currentAmount = ((currentAmount / 0.25).round()) * 0.25;
     _recommendedRepo.updateStream(DoubleModel(data: currentAmount));
     return currentAmount.toString();
   }
@@ -236,12 +235,13 @@ class ConditionsBloc extends Disposable {
       return 60;
   }
 
-  void initializeLocalNotification() async {
-    flutterLocalNotificationsPlugin =
-    FlutterLocalNotificationsPlugin();
-    AndroidInitializationSettings androidInitializationSettings= AndroidInitializationSettings('app_icon');
-    IOSInitializationSettings iosInitializationSettings= IOSInitializationSettings(
-        onDidReceiveLocalNotification: onDidReceiveLocalNotification);
+  Future<void> initializeLocalNotification() async {
+    flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+    AndroidInitializationSettings androidInitializationSettings =
+        AndroidInitializationSettings('app_icon');
+    IOSInitializationSettings iosInitializationSettings =
+        IOSInitializationSettings(
+            onDidReceiveLocalNotification: onDidReceiveLocalNotification);
     InitializationSettings initializationSettings = InitializationSettings(
         androidInitializationSettings, iosInitializationSettings);
     await flutterLocalNotificationsPlugin.initialize(initializationSettings,
@@ -250,15 +250,17 @@ class ConditionsBloc extends Disposable {
 
   double roundDouble(double value, int places) {
     double mod = pow(10.0, places);
-    double number =  ((value * mod).round().toDouble() / mod);
-    return ((number/0.25).round())*0.25; //Multiple of a cup
+    double number = ((value * mod).round().toDouble() / mod);
+    return ((number / 0.25).round()) * 0.25; //Multiple of a cup
   }
-  bool isNowExercising(){
+
+  bool isNowExercising() {
     return false;
   }
 
   @override
   void dispose() {}
+
   /// Notification
 
   static Future onDidReceiveLocalNotification(
@@ -276,25 +278,31 @@ class ConditionsBloc extends Disposable {
       ],
     );
   }
+
   static Future onSelectNotification(String payLoad) {
     if (payLoad != null) {
       print(payLoad);
     }
     // we can set navigator to navigate another screen
   }
+
+  void scheduleNotification() {
+    Timer(Duration(seconds: 5), notification);
+  }
+
   Future<void> notification() async {
     await initializeLocalNotification();
     AndroidNotificationDetails androidNotificationDetails =
-    AndroidNotificationDetails(
-        'Channel ID', 'Channel title', 'channel body',
-        priority: Priority.High,
-        importance: Importance.Max,
-        ticker: 'test');
+        AndroidNotificationDetails(
+            'Channel ID', 'Channel title', 'channel body',
+            priority: Priority.High,
+            importance: Importance.Max,
+            ticker: 'test');
 
     IOSNotificationDetails iosNotificationDetails = IOSNotificationDetails();
 
     NotificationDetails notificationDetails =
-    NotificationDetails(androidNotificationDetails, iosNotificationDetails);
+        NotificationDetails(androidNotificationDetails, iosNotificationDetails);
     await flutterLocalNotificationsPlugin.show(
         0, 'Nutracker', 'Time to take a drink', notificationDetails);
   }
@@ -303,16 +311,16 @@ class ConditionsBloc extends Disposable {
     await initializeLocalNotification();
     var timeDelayed = DateTime.now().add(Duration(seconds: 5));
     AndroidNotificationDetails androidNotificationDetails =
-    AndroidNotificationDetails(
-        'second channel ID', 'second Channel title', 'second channel body',
-        priority: Priority.High,
-        importance: Importance.Max,
-        ticker: 'test');
+        AndroidNotificationDetails(
+            'second channel ID', 'second Channel title', 'second channel body',
+            priority: Priority.High,
+            importance: Importance.Max,
+            ticker: 'test');
 
     IOSNotificationDetails iosNotificationDetails = IOSNotificationDetails();
 
     NotificationDetails notificationDetails =
-    NotificationDetails(androidNotificationDetails, iosNotificationDetails);
+        NotificationDetails(androidNotificationDetails, iosNotificationDetails);
     await flutterLocalNotificationsPlugin.schedule(1, 'Hello there',
         'please subscribe my channel', timeDelayed, notificationDetails);
   }

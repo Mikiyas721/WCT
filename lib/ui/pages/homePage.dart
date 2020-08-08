@@ -32,45 +32,86 @@ class HomePage extends StatelessWidget {
           BlocProvider<ConditionsBloc>(
             blocFactory: () => ConditionsBloc(),
             builder: (BuildContext context, ConditionsBloc bloc) {
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Padding(
-                      padding: EdgeInsets.all(20),
-                      child: StreamBuilder(
-                          stream: bloc.soFarStream,
-                          builder: (BuildContext context,
-                              AsyncSnapshot<double> snapshot) {
-                            return LinearProgressIndicator(
-                              value: bloc.progress(snapshot.data),
-                            );
-                          })),
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      FlatButton(
-                          onPressed: () async {
-                            cup.decrease(0.1);
-                            bloc.onOneCup();
-                            await bloc.notification();
-                          },
-                          child: Text('1 Cup')),
-                      FlatButton(
-                          onPressed: () async {
-                            cup.refill();
-                            bloc.onTwoCup();
-                            await bloc.notificationAfterSec();
-                          },
-                          child: Text('2 Cup'))
-                    ],
-                  )
-                ],
-              );
+              return Row(mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                CustomPaint(
+                  painter: cup,
+                  size: Size(150,620),
+                ),
+                Card(
+                    color: Theme.of(context).primaryColorLight,
+                    child: Padding(
+                      padding: EdgeInsets.only(left: 8, top: 8),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            'Recommended Amount',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          StreamBuilder(
+                              stream: bloc.recommendedStream,
+                              builder: (BuildContext context,
+                                  AsyncSnapshot snapshot) {
+                                return Text(
+                                  'Regular- ${bloc.fetchRecommended()} Ls\nExercising - ${bloc.getExerciseTimeRecommended()} Ls\n',
+                                  style: TextStyle(fontStyle: FontStyle.italic),
+                                );
+                              }),
+                          Text(
+                            'Day Statistics',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          StreamBuilder(
+                              stream: bloc.recommendedStream,
+                              builder: (BuildContext context,
+                                  AsyncSnapshot snapshot) {
+                                return Text(
+                                  'Consumed Amount {}\nRemaining Amount {}\n',
+                                  style: TextStyle(fontStyle: FontStyle.italic),
+                                );
+                              }),
+                          Text(
+                            'Next Drink Statistics',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          StreamBuilder(
+                              stream: bloc.recommendedStream,
+                              builder: (BuildContext context,
+                                  AsyncSnapshot snapshot) {
+                                return Text(
+                                  'After {}\nAmount {}',
+                                  style: TextStyle(fontStyle: FontStyle.italic),
+                                );
+                              }),
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              FlatButton(
+                                  onPressed: () async {
+                                    cup.decrease(0.1);
+                                    bloc.onOneCup();
+                                    bloc.scheduleNotification();
+                                  },
+                                  child: Text('1 Cup')),
+                              FlatButton(
+                                  onPressed: () async {
+                                    cup.refill();
+                                    bloc.onTwoCup();
+                                    await bloc.notificationAfterSec();
+                                  },
+                                  child: Text('2 Cup'))
+                            ],
+                          )
+                        ],
+                      ),
+                    )),
+              ]);
             },
           ),
-          CustomPaint(
-            painter: cup,
-          )
+          Icon(Icons.fastfood, size: 20,)
         ]),
         floatingActionButton: FabCircularMenu(
           children: [
