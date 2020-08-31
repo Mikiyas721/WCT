@@ -103,13 +103,13 @@ class NotificationPage extends StatelessWidget {
                               builder: (BuildContext context,
                                   AsyncSnapshot<String> snapshot) {
                                 return MyTimePickerDialogTile(
-                                  title: 'From',
-                                  dialogTitle: 'Time from bed',
+                                  title: 'To',
+                                  dialogTitle: 'Time to bed',
                                   time: bloc.mapTime(
-                                      bloc.getFromBedTrailing(snapshot.data)),
+                                      bloc.getToBedTrailing(snapshot.data)),
                                   trailing:
-                                      bloc.getFromBedTrailing(snapshot.data),
-                                  onTimeChanged: bloc.onFromBedChanged,
+                                  bloc.getToBedTrailing(snapshot.data),
+                                  onTimeChanged: bloc.onToBedChanged,
                                 );
                               },
                             ),
@@ -118,13 +118,13 @@ class NotificationPage extends StatelessWidget {
                               builder: (BuildContext context,
                                   AsyncSnapshot<String> snapshot) {
                                 return MyTimePickerDialogTile(
-                                  title: 'To',
-                                  dialogTitle: 'Time to bed',
+                                  title: 'From',
+                                  dialogTitle: 'Time from bed',
                                   time: bloc.mapTime(
-                                      bloc.getToBedTrailing(snapshot.data)),
+                                      bloc.getFromBedTrailing(snapshot.data)),
                                   trailing:
-                                      bloc.getToBedTrailing(snapshot.data),
-                                  onTimeChanged: bloc.onToBedChanged,
+                                      bloc.getFromBedTrailing(snapshot.data),
+                                  onTimeChanged: bloc.onFromBedChanged,
                                 );
                               },
                             ),

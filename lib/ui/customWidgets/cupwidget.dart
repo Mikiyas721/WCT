@@ -29,7 +29,7 @@ class _CupWidgetState extends State<CupWidget> with TickerProviderStateMixin {
       animation: waterAnimation,
       builder: (BuildContext context, Widget child) {
         return Center(
-          child: CustomPaint(painter: Cup(refill: false, intake: waterAnimation.value)),
+          child: CustomPaint(painter: Cup()),
         );
       },
     );

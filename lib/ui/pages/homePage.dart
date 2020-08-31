@@ -1,3 +1,6 @@
+import 'package:Nutracker/ui/customWidgets/myCountDownTimer.dart';
+import 'package:flutter_countdown_timer/countdown_timer.dart';
+
 import '../../ui/customWidgets/cup.dart';
 import '../../bloc/conditionsBloc.dart';
 import '../../bloc/notificationBloc.dart';
@@ -80,10 +83,21 @@ class HomePage extends StatelessWidget {
                               stream: bloc.recommendedStream,
                               builder: (BuildContext context,
                                   AsyncSnapshot snapshot) {
-                                return Text(
-                                  'After {}\nAmount {}\n',
-                                  style: TextStyle(fontStyle: FontStyle.italic),
-                                );
+                                return Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      CountdownTimer(
+                                        endTime: DateTime.now()
+                                                .millisecondsSinceEpoch +
+                                            10000,
+                                      ),
+                                      Text(
+                                        'Amount {}',
+                                        style: TextStyle(
+                                            fontStyle: FontStyle.italic),
+                                      ),
+                                    ]);
                               }),
                           Row(
                             mainAxisSize: MainAxisSize.min,
@@ -94,6 +108,7 @@ class HomePage extends StatelessWidget {
                                     if (cup.decrease(0.1)) {
                                       bloc.onOneCup();
                                     }
+                                    cup.decrease(0.1);
                                     bloc.scheduleNotification();
                                   }),
                               FlatButton(

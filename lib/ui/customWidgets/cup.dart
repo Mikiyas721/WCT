@@ -3,16 +3,6 @@ import 'package:flutter/material.dart';
 class Cup extends CustomPainter {
   double constant = 1;
 
-  Cup({double intake, bool refill}) {
-    /* if (refill != null && refill)
-      constant = 1;
-    else {
-      if (constant <= 2.2) {
-        constant += intake;
-      }
-    }*/
-  }
-
   @override
   void paint(Canvas canvas, Size size) {
     Paint cupLiningPainter = Paint();
@@ -20,27 +10,44 @@ class Cup extends CustomPainter {
     cupLiningPainter.style = PaintingStyle.stroke;
 
     Paint waterPainter = Paint();
-    waterPainter.color = Color(0xFFEBF4FA); // TODO replace with water color
+    waterPainter.color =
+        Colors.lightBlueAccent; // TODO replace with water color
     waterPainter.style = PaintingStyle.fill;
 
     Path cupLiningPath = Path();
 
-    cupLiningPath.moveTo(size.width * 0.2, size.height * 0.275);
-    cupLiningPath.quadraticBezierTo(size.width * 0.5, size.height * 0.34,
-        size.width * 0.8, size.height * 0.275);
-    cupLiningPath.lineTo(size.width * 0.8, size.height * 0.7);
-    cupLiningPath.lineTo(size.width * 0.2, size.height * 0.7);
-    cupLiningPath.lineTo(size.width * 0.2, size.height * 0.275);
-    cupLiningPath.quadraticBezierTo(size.width * 0.5, size.height * 0.24,
-        size.width * 0.8, size.height * 0.275);
+    cupLiningPath.moveTo(size.width * 0.15, size.height * 0.3);
+    cupLiningPath.lineTo(size.width * 0.9, size.height * 0.3);
+    cupLiningPath.lineTo(size.width * 0.75, size.height * 0.7);
+    cupLiningPath.lineTo(size.width * 0.3, size.height * 0.7);
+    cupLiningPath.lineTo(size.width * 0.15, size.height * 0.3);
 
     Path waterPath = Path();
 
-    waterPath.moveTo(size.width * 0.21, size.height * constant * 0.31);
-    waterPath.moveTo(size.width * 0.79, size.height * constant * 0.31);
-    waterPath.lineTo(size.width * 0.79, size.height * 0.695);
-    waterPath.lineTo(size.width * 0.21, size.height * 0.695);
-    waterPath.lineTo(size.width * 0.21, size.height * constant * 0.31);
+    waterPath.moveTo(size.width * 0.154, size.height * 0.31 * constant);
+    waterPath.quadraticBezierTo(
+        size.width * 0.099,
+        size.height * 0.315 * constant,
+        size.width * 0.3375,
+        size.height * 0.3 * constant);
+    waterPath.quadraticBezierTo(
+        size.width * 0.44,
+        size.height * 0.302 * constant,
+        size.width * 0.525,
+        size.height * 0.31 * constant);
+    waterPath.quadraticBezierTo(
+        size.width * 0.61,
+        size.height * 0.319 * constant,
+        size.width * 0.7125,
+        size.height * 0.32 * constant);
+    waterPath.quadraticBezierTo(
+        size.width * 0.815,
+        size.height * 0.319 * constant,
+        size.width * 0.895,
+        size.height * 0.31 * constant);
+    waterPath.lineTo(size.width * 0.75,size. height * 0.7);
+    waterPath.lineTo(size.width * 0.3, size.height * 0.7);
+    waterPath.lineTo(size.width * 0.154,size. height * 0.31 * constant);
 
     canvas.drawPath(cupLiningPath, cupLiningPainter);
     canvas.drawPath(waterPath, waterPainter);
