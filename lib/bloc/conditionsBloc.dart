@@ -290,8 +290,8 @@ class ConditionsBloc extends Disposable {
     // we can set navigator to navigate another screen
   }
 
-  void scheduleNotification() {
-    Timer(Duration(seconds: 5), notification);
+  void scheduleNotification(int seconds) {
+    Timer(Duration(seconds: seconds), notification);
   }
 
   Future<void> notification() async {

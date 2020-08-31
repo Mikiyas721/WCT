@@ -1,6 +1,5 @@
 import 'package:Nutracker/ui/customWidgets/myCountDownTimer.dart';
-import 'package:flutter_countdown_timer/countdown_timer.dart';
-
+import 'package:slide_countdown_clock/slide_countdown_clock.dart';
 import '../../ui/customWidgets/cup.dart';
 import '../../bloc/conditionsBloc.dart';
 import '../../bloc/notificationBloc.dart';
@@ -87,10 +86,21 @@ class HomePage extends StatelessWidget {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: <Widget>[
-                                      CountdownTimer(
-                                        endTime: DateTime.now()
-                                                .millisecondsSinceEpoch +
-                                            10000,
+                                      Row(
+                                        children: <Widget>[
+                                          Text('After : '),
+                                          SlideCountdownClock(
+                                            duration: Duration(seconds: 30),
+                                            onDone: () {
+                                              Toast.show('Time to drink', context);
+                                              bloc.scheduleNotification(0);
+                                            },
+                                            separator: ':',
+                                            textStyle: TextStyle(
+                                              fontSize: 18,
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                       Text(
                                         'Amount {}',
@@ -109,7 +119,7 @@ class HomePage extends StatelessWidget {
                                       bloc.onOneCup();
                                     }
                                     cup.decrease(0.1);
-                                    bloc.scheduleNotification();
+                                    bloc.scheduleNotification(5);
                                   }),
                               FlatButton(
                                   onPressed: () async {
