@@ -7,9 +7,9 @@ class PreferenceKeys {
   static final String exerciseType = 'ExerciseType';
   static final String exerciseLength = 'ExerciseLength';
   static final String soFar = 'SoFar';
-  static final String disableNotification = 'DisableNotification';
+  static final String isNotificationDisabled = 'DisableNotification';
   static final String nowExercising = 'NowExercising';
-  static final String notification = 'Notification';
+  static final String notify = 'Notification';
   static final String popupNotification = 'PopupNotification';
   static final String alarm = 'Alarm';
   static final String time = 'Time';

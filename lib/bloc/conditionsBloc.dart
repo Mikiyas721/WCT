@@ -29,8 +29,6 @@ class ConditionsBloc extends Disposable {
   ExerciseLengthRepo _exerciseLengthRepo = GetIt.instance.get();
   SoFarRepo _soFarRepo = GetIt.instance.get();
 
-  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
-
   Stream<String> get ageStream => _ageRepo.getStream<String>((value) => value);
 
   Stream<String> get weightStream =>
@@ -239,19 +237,6 @@ class ConditionsBloc extends Disposable {
       return 60;
   }
 
-  Future<void> initializeLocalNotification() async {
-    flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-    AndroidInitializationSettings androidInitializationSettings =
-        AndroidInitializationSettings('app_icon');
-    IOSInitializationSettings iosInitializationSettings =
-        IOSInitializationSettings(
-            onDidReceiveLocalNotification: onDidReceiveLocalNotification);
-    InitializationSettings initializationSettings = InitializationSettings(
-        androidInitializationSettings, iosInitializationSettings);
-    await flutterLocalNotificationsPlugin.initialize(initializationSettings,
-        onSelectNotification: onSelectNotification);
-  }
-
   double roundDouble(double value, int places) {
     double mod = pow(10.0, places);
     double number = ((value * mod).round().toDouble() / mod);
@@ -267,65 +252,4 @@ class ConditionsBloc extends Disposable {
 
   /// Notification
 
-  static Future onDidReceiveLocalNotification(
-      int id, String title, String body, String payload) async {
-    return CupertinoAlertDialog(
-      title: Text(title),
-      content: Text(body),
-      actions: <Widget>[
-        CupertinoDialogAction(
-            isDefaultAction: true,
-            onPressed: () {
-              print("");
-            },
-            child: Text("Okay")),
-      ],
-    );
-  }
-
-  static Future onSelectNotification(String payLoad) {
-    if (payLoad != null) {
-      print(payLoad);
-    }
-    // we can set navigator to navigate another screen
-  }
-
-  void scheduleNotification(int seconds) {
-    Timer(Duration(seconds: seconds), notification);
-  }
-
-  Future<void> notification() async {
-    await initializeLocalNotification();
-    AndroidNotificationDetails androidNotificationDetails =
-        AndroidNotificationDetails(
-            'Channel ID', 'Channel title', 'channel body',
-            priority: Priority.High,
-            importance: Importance.Max,
-            ticker: 'test');
-
-    IOSNotificationDetails iosNotificationDetails = IOSNotificationDetails();
-
-    NotificationDetails notificationDetails =
-        NotificationDetails(androidNotificationDetails, iosNotificationDetails);
-    await flutterLocalNotificationsPlugin.show(
-        0, 'Nutracker', 'Time to take a drink', notificationDetails);
-  }
-
-  Future<void> notificationAfterSec() async {
-    await initializeLocalNotification();
-    var timeDelayed = DateTime.now().add(Duration(seconds: 5));
-    AndroidNotificationDetails androidNotificationDetails =
-        AndroidNotificationDetails(
-            'second channel ID', 'second Channel title', 'second channel body',
-            priority: Priority.High,
-            importance: Importance.Max,
-            ticker: 'test');
-
-    IOSNotificationDetails iosNotificationDetails = IOSNotificationDetails();
-
-    NotificationDetails notificationDetails =
-        NotificationDetails(androidNotificationDetails, iosNotificationDetails);
-    await flutterLocalNotificationsPlugin.schedule(1, 'Hello there',
-        'please subscribe my channel', timeDelayed, notificationDetails);
-  }
 }

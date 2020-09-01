@@ -45,7 +45,7 @@ class NotificationBloc extends Disposable {
   void onDisableTap(bool newValue) {
     _disableNotificationRepo.updateStream(BooleanModel(newValue));
     _disableNotificationRepo.setPreference<bool>(
-        PreferenceKeys.disableNotification, newValue);
+        PreferenceKeys.isNotificationDisabled, newValue);
   }
 
   void onNowExercisingTap(bool newValue) {
@@ -57,7 +57,7 @@ class NotificationBloc extends Disposable {
   void onNotificationTap(bool newValue) {
     _notificationRepo.updateStream(BooleanModel(newValue));
     _notificationRepo.setPreference<bool>(
-        PreferenceKeys.notification, newValue);
+        PreferenceKeys.notify, newValue);
   }
 
   void onPopupTap(bool newValue) {
@@ -67,7 +67,7 @@ class NotificationBloc extends Disposable {
 
   bool disableValue(bool snapshot) {
     bool x = _disableNotificationRepo
-        .getPreference<bool>(PreferenceKeys.disableNotification);
+        .getPreference<bool>(PreferenceKeys.isNotificationDisabled);
     return snapshot == null ? x == null ? false : x : snapshot;
   }
 
@@ -78,7 +78,7 @@ class NotificationBloc extends Disposable {
   }
 
   bool notificationValue(bool snapshot) {
-    bool x = _notificationRepo.getPreference<bool>(PreferenceKeys.notification);
+    bool x = _notificationRepo.getPreference<bool>(PreferenceKeys.notify);
     return snapshot == null ? x == null ? false : x : snapshot;
   }
 
