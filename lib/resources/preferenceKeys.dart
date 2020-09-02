@@ -6,7 +6,7 @@ class PreferenceKeys {
   static final String mealFluid = 'MealFluid';
   static final String exerciseType = 'ExerciseType';
   static final String exerciseLength = 'ExerciseLength';
-  static final String soFar = 'SoFar';
+  static final String consumedAmount = 'ConsumedAmount';
   static final String isNotificationDisabled = 'DisableNotification';
   static final String nowExercising = 'NowExercising';
   static final String notify = 'Notification';
@@ -15,4 +15,5 @@ class PreferenceKeys {
   static final String time = 'Time';
   static final String sleepingTime = 'SleepingTime';
   static final String is24 = 'Is24';
+  static final String isDefaultSet = 'IsDefaultSet';
 }

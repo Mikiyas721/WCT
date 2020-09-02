@@ -20,7 +20,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'dataSource/conditions/exerciseLengthDataSource.dart';
 import 'dataSource/conditions/exerciseTypeDataSource.dart';
-import 'dataSource/conditions/soFarDataSource.dart';
+import 'dataSource/conditions/consumedDataSource.dart';
 import 'dataSource/notification/sleepTimeRepo.dart';
 import 'models/double.dart';
 
@@ -44,8 +44,8 @@ void inject() async {
       () => WeightRepo(BehaviorSubject<StringModel>()));
   GetIt.instance.registerLazySingleton<RecommendedRepo>(
       () => RecommendedRepo(BehaviorSubject<DoubleModel>()));
-  GetIt.instance.registerLazySingleton<SoFarRepo>(
-      () => SoFarRepo(BehaviorSubject<DoubleModel>()));
+  GetIt.instance.registerLazySingleton<ConsumedRepo>(
+      () => ConsumedRepo(BehaviorSubject<DoubleModel>()));
 
   GetIt.instance.registerLazySingleton<DisableNotificationRepo>(
       () => DisableNotificationRepo(BehaviorSubject<BooleanModel>()));
