@@ -34,11 +34,11 @@ setUpDefaults() {
   themeRepo.setPreference<String>(PreferenceKeys.exerciseLength, '45');
   themeRepo.setPreference<double>(PreferenceKeys.consumedAmount, 0.0);
   themeRepo.setPreference<bool>(PreferenceKeys.isNotificationDisabled, false);
-  themeRepo.setPreference<bool>(PreferenceKeys.nowExercising, true);
+  themeRepo.setPreference<bool>(PreferenceKeys.nowExercising, false);
   themeRepo.setPreference<bool>(PreferenceKeys.notify, true);
   themeRepo.setPreference<bool>(PreferenceKeys.popupNotification, false);
   themeRepo.setPreference<String>(PreferenceKeys.alarm, 'Sound');
-  themeRepo.setPreference<String>(PreferenceKeys.time, '40 Minutes');
+  themeRepo.setPreference<String>(PreferenceKeys.time, '2 Hours');
   themeRepo.setPreference<String>(PreferenceKeys.sleepingTime, true);
   themeRepo.setPreference<bool>(PreferenceKeys.is24, false);
   themeRepo.setPreference<bool>(PreferenceKeys.isDefaultSet, true);

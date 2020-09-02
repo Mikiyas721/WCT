@@ -32,8 +32,6 @@ class WaterSettingsTab extends StatelessWidget {
                       title: 'Time',
                       options: [
                         'auto',
-                        '20 Minutes',
-                        '40 Minutes',
                         '60 Minutes',
                         '90 Minutes',
                         '2 Hours',

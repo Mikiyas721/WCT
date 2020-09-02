@@ -60,7 +60,7 @@ class HomePage extends StatelessWidget {
                               stream: bloc.recommendedStream,
                               builder: (BuildContext context, AsyncSnapshot snapshot) {
                                 return Text(
-                                  'Regular - ${bloc.fetchRecommended()} Ls\nExercising - ${bloc.getExerciseTimeRecommended()} Ls\n',
+                                  'Regular : ${bloc.fetchRecommended()} Ls\nExercising : ${bloc.getExerciseTimeRecommended()} Ls\n',
                                   style: TextStyle(fontStyle: FontStyle.italic),
                                 );
                               }),
@@ -72,7 +72,7 @@ class HomePage extends StatelessWidget {
                               stream: bloc.consumedStream,
                               builder: (BuildContext context, AsyncSnapshot<double> snapshot) {
                                 return Text(
-                                  'Consumed - ${bloc.consumedAmount(snapshot.data)} Ls\nRemaining - ${bloc.remainingAmount(snapshot.data)} Ls\n',
+                                  'Consumed : ${bloc.consumedAmount(snapshot.data)} Ls\nRemaining : ${bloc.remainingAmount(snapshot.data)} Ls\n',
                                   style: TextStyle(fontStyle: FontStyle.italic),
                                 );
                               }),
@@ -111,7 +111,7 @@ class HomePage extends StatelessWidget {
                                         ],
                                       ),
                                       Text(
-                                        'Amount - ${bloc.getUnitAmount()} Ls',
+                                        'Amount : ${bloc.getUnitAmount()} Ls',
                                         style: TextStyle(fontStyle: FontStyle.italic),
                                       ),
                                     ]);
@@ -127,7 +127,10 @@ class HomePage extends StatelessWidget {
                                         'How many cups did you drink?', 1, bloc.getUnitAmountInCups(), 1, 4,
                                         (num selectedValue) {
                                       cupCount = selectedValue;
-                                    }, bloc.onDrinkConfirmed);
+                                    }, () {
+                                      bloc.onDrinkConfirmed(cupCount);
+                                      Navigator.pop(context);
+                                    });
                                   });
                             },
                             color: Theme.of(context).buttonColor,

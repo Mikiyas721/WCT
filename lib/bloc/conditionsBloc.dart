@@ -1,7 +1,5 @@
 import 'dart:async';
 import 'package:audioplayers/audio_cache.dart';
-import 'package:audioplayers/audioplayers.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import '../dataSource/conditions/consumedDataSource.dart';
 import '../models/double.dart';
@@ -19,6 +17,8 @@ import 'package:get_it/get_it.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'timeBloc.dart';
+import 'notificationBloc.dart';
 
 class ConditionsBloc extends Disposable {
   AgeRepo _ageRepo = GetIt.instance.get();
@@ -216,7 +216,7 @@ class ConditionsBloc extends Disposable {
   double roundDouble(double value, int places) {
     double mod = pow(10.0, places);
     double number = ((value * mod).round().toDouble() / mod);
-    return ((number / 0.25).round()) * 0.25; //Multiple of a cup
+    return ((number / 0.25).ceil()) * 0.25; //Multiple of a cup
   }
 
   bool isNowExercising() {
@@ -240,14 +240,32 @@ class ConditionsBloc extends Disposable {
   }
 
   String getUnitAmount() {
-    return '0.25';
+    return roundDouble(
+            ((remainingAmount(null) * TimeBloc().getCountDownTime(null)) /
+                NotificationBloc().getRemainingTime()),
+            2)
+        .toString();
   }
 
   int getUnitAmountInCups() {
-    return 1;
+    return (double.parse(getUnitAmount()) ~/ 0.25);
   }
 
-  void onDrinkConfirmed() {}
+  void onDrinkConfirmed(int cupCount) {
+    double takenSoFar = _consumedRepo.getPreference<double>(PreferenceKeys.consumedAmount);
+    takenSoFar == null ? takenSoFar = 0 : takenSoFar = takenSoFar;
+    _consumedRepo.setPreference<double>(PreferenceKeys.consumedAmount, takenSoFar += (0.25 * cupCount));
+    _consumedRepo.updateStream(DoubleModel(data: takenSoFar += (0.25 * cupCount)));
+
+    String alarm = _consumedRepo.getPreference<String>(PreferenceKeys.alarm);
+
+    if (alarm == 'Sound') {
+      onStopAlarm();
+      AudioCache audioPlayer = AudioCache();
+      audioPlayer.play('Water.mp3');
+    }
+
+  }
 
   @override
   void dispose() {}

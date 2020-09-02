@@ -24,40 +24,31 @@ class NotificationBloc extends Disposable {
   Stream<bool> get disableNotificationStream =>
       _disableNotificationRepo.getStream<bool>((newValue) => newValue);
 
-  Stream<bool> get nowExercisingStream =>
-      _nowExercisingRepo.getStream<bool>((newValue) => newValue);
+  Stream<bool> get nowExercisingStream => _nowExercisingRepo.getStream<bool>((newValue) => newValue);
 
-  Stream<bool> get notificationStream =>
-      _notificationRepo.getStream<bool>((newValue) => newValue);
+  Stream<bool> get notificationStream => _notificationRepo.getStream<bool>((newValue) => newValue);
 
-  Stream<bool> get popupStream =>
-      _popUpRepo.getStream<bool>((newValue) => newValue);
+  Stream<bool> get popupStream => _popUpRepo.getStream<bool>((newValue) => newValue);
 
-  Stream<String> get alarmStream =>
-      _alarmRepo.getStream<String>((newValue) => newValue);
+  Stream<String> get alarmStream => _alarmRepo.getStream<String>((newValue) => newValue);
 
-  Stream<String> get sleepTimeStream =>
-      _sleepTimeRepo.getStream<String>((newValue) => newValue);
+  Stream<String> get sleepTimeStream => _sleepTimeRepo.getStream<String>((newValue) => newValue);
 
-  Stream<bool> get repo24Stream =>
-      _repo24.getStream<bool>((newValue) => newValue);
+  Stream<bool> get repo24Stream => _repo24.getStream<bool>((newValue) => newValue);
 
   void onDisableTap(bool newValue) {
     _disableNotificationRepo.updateStream(BooleanModel(newValue));
-    _disableNotificationRepo.setPreference<bool>(
-        PreferenceKeys.isNotificationDisabled, newValue);
+    _disableNotificationRepo.setPreference<bool>(PreferenceKeys.isNotificationDisabled, newValue);
   }
 
   void onNowExercisingTap(bool newValue) {
     _nowExercisingRepo.updateStream(BooleanModel(newValue));
-    _nowExercisingRepo.setPreference<bool>(
-        PreferenceKeys.nowExercising, newValue);
+    _nowExercisingRepo.setPreference<bool>(PreferenceKeys.nowExercising, newValue);
   }
 
   void onNotificationTap(bool newValue) {
     _notificationRepo.updateStream(BooleanModel(newValue));
-    _notificationRepo.setPreference<bool>(
-        PreferenceKeys.notify, newValue);
+    _notificationRepo.setPreference<bool>(PreferenceKeys.notify, newValue);
   }
 
   void onPopupTap(bool newValue) {
@@ -66,14 +57,12 @@ class NotificationBloc extends Disposable {
   }
 
   bool disableValue(bool snapshot) {
-    bool x = _disableNotificationRepo
-        .getPreference<bool>(PreferenceKeys.isNotificationDisabled);
+    bool x = _disableNotificationRepo.getPreference<bool>(PreferenceKeys.isNotificationDisabled);
     return snapshot == null ? x == null ? false : x : snapshot;
   }
 
   bool nowExercisingValue(bool snapshot) {
-    bool x =
-        _nowExercisingRepo.getPreference<bool>(PreferenceKeys.nowExercising);
+    bool x = _nowExercisingRepo.getPreference<bool>(PreferenceKeys.nowExercising);
     return snapshot == null ? x == null ? false : x : snapshot;
   }
 
@@ -88,9 +77,7 @@ class NotificationBloc extends Disposable {
   }
 
   String alarmGroupValue(String snapshot) {
-    return snapshot == null
-        ? _alarmRepo.getPreference<String>(PreferenceKeys.alarm)
-        : snapshot;
+    return snapshot == null ? _alarmRepo.getPreference<String>(PreferenceKeys.alarm) : snapshot;
   }
 
   void onAlarmChanged(String newValue) {
@@ -121,11 +108,8 @@ class NotificationBloc extends Disposable {
   }
 
   List<String> getTimeString({String x}) {
-    String saved =
-        _sleepTimeRepo.getPreference<String>(PreferenceKeys.sleepingTime);
-    return x == null
-        ? saved == null ? ['10:00-PM', '06:00-AM'] : saved.split('|')
-        : x.split('|');
+    String saved = _sleepTimeRepo.getPreference<String>(PreferenceKeys.sleepingTime);
+    return x == null ? saved == null ? ['10:00-PM', '06:00-AM'] : saved.split('|') : x.split('|');
   }
 
   void onFromBedChanged(DateTime dateTime) {
@@ -140,16 +124,22 @@ class NotificationBloc extends Disposable {
     _sleepTimeRepo.setPreference<String>(PreferenceKeys.sleepingTime, toBed);
   }
 
-  String getFromBedTrailing(String snapShot) {
-    return snapShot == null
-        ? getTimeString()[0]
-        : getTimeString(x: snapShot)[0];
+  String getToBedTrailing(String snapShot) {
+    return snapShot == null ? getTimeString()[0] : getTimeString(x: snapShot)[0];
   }
 
-  String getToBedTrailing(String snapShot) {
-    return snapShot == null
-        ? getTimeString()[1]
-        : getTimeString(x: snapShot)[1];
+  String getFromBedTrailing(String snapShot) {
+    return snapShot == null ? getTimeString()[1] : getTimeString(x: snapShot)[1];
+  }
+
+  int getRemainingTime() {
+    DateTime toBed = mapTime(getTimeString()[0]);
+    DateTime now = DateTime.now();
+    int minuteDifference = toBed.minute - now.minute;
+    int hourDifference = toBed.hour - now.hour;
+    if (minuteDifference < 0) minuteDifference += 60;
+    if (hourDifference < 0) hourDifference += 24;
+    return minuteDifference + (hourDifference * 60);
   }
 
   IconData getNotificationIcon(String snapShot) {
@@ -180,11 +170,9 @@ class NotificationBloc extends Disposable {
     if (time[0] == '0' || time[0] == '12')
       return DateTime(now.year, now.month, now.day, 12, int.parse(time[1]));
     else if (initial[1] == 'AM') {
-      return DateTime(
-          now.year, now.month, now.day, int.parse(time[0]), int.parse(time[1]));
+      return DateTime(now.year, now.month, now.day, int.parse(time[0]), int.parse(time[1]));
     }
-    return DateTime(now.year, now.month, now.day, int.parse(time[0]) - 12,
-        int.parse(time[1]));
+    return DateTime(now.year, now.month, now.day, int.parse(time[0]) - 12, int.parse(time[1]));
   }
 
   @override
