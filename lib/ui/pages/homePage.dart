@@ -15,8 +15,6 @@ import '../../bloc/themeBloc.dart';
 
 // ignore: must_be_immutable
 class HomePage extends StatelessWidget {
-  Cup cup = Cup();
-
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -39,10 +37,16 @@ class HomePage extends StatelessWidget {
             blocFactory: () => ConditionsBloc(),
             builder: (BuildContext context, ConditionsBloc bloc) {
               return Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
-                CustomPaint(
-                  painter: cup,
-                  size: Size(150, 620),
-                ),
+                StreamBuilder(
+                    stream: bloc.consumedStream,
+                    builder: (BuildContext context, AsyncSnapshot snapShot) {
+                      return CustomPaint(
+                        painter: Cup(
+                            consumedAmount: bloc.consumedAmount(snapShot.data),
+                            recommendedAmount: double.parse(bloc.fetchRecommended())),
+                        size: Size(150, 620),
+                      );
+                    }),
                 Card(
                     color: Theme.of(context).primaryColorLight,
                     child: Padding(
