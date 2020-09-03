@@ -217,7 +217,7 @@ class ConditionsBloc extends Disposable {
   double roundDouble(double value, int places) {
     double mod = pow(10.0, places);
     double number = ((value * mod).round().toDouble() / mod);
-    return ((number / 0.25).ceil()) * 0.25; //Multiple of a cup
+    return ((number / 0.25).round()) * 0.25; //Multiple of a cup
   }
 
   bool isNowExercising() {
@@ -242,21 +242,24 @@ class ConditionsBloc extends Disposable {
 
   String getUnitAmount() {
     return roundDouble(
-            ((remainingAmount(null) * timeBloc.getCountDownTime(null)) / //TODO check for an alternative
-                notificationBloc.getRemainingTime()),
+        ((double.parse(fetchRecommended()) * timeBloc.getCountDownTime(null)) / //TODO check for an alternative
+                (1440 - notificationBloc.getSleepingTimeRange())),
             2)
         .toString();
   }
 
   int getUnitAmountInCups() {
-    return (double.parse(getUnitAmount()) ~/ 0.25);
+    return (double.parse(getUnitAmount()) ~/ 0.25) == 0.0 ? 1 : (double.parse(getUnitAmount()) ~/ 0.25);
   }
 
   void onDrinkConfirmed(int cupCount) {
     double takenSoFar = _consumedRepo.getPreference<double>(PreferenceKeys.consumedAmount);
-    takenSoFar == null ? takenSoFar = 0 : takenSoFar = takenSoFar;
-    _consumedRepo.setPreference<double>(PreferenceKeys.consumedAmount, takenSoFar += (0.25 * cupCount));
-    _consumedRepo.updateStream(DoubleModel(data: takenSoFar += (0.25 * cupCount)));
+    double dailyRecommended = double.parse(fetchRecommended());
+
+    if (takenSoFar < dailyRecommended) {
+      _consumedRepo.setPreference<double>(PreferenceKeys.consumedAmount, takenSoFar += (0.25 * cupCount));
+      _consumedRepo.updateStream(DoubleModel(data: takenSoFar += (0.25 * cupCount)));
+    }
 
     String alarm = _consumedRepo.getPreference<String>(PreferenceKeys.alarm);
 
@@ -267,15 +270,19 @@ class ConditionsBloc extends Disposable {
     }
 
     if (!hasTime()) {
+      print("hasn't time");
       timeBloc.updateTime(
           '${notificationBloc.getRemainingTime() + notificationBloc.getSleepingTimeRange()} Minutes');
       // TODO Record on Database the Consumed and remaining Amount
       _consumedRepo.updateStream(DoubleModel(data: 0.0));
     } else {
-      if (remainingAmount(null) == 0.0) {
+      if (remainingAmount(null) <= 0.0) {
         //TODO Display a message showing that they have completed the Day
+        print("has time");
+        _consumedRepo.setPreference<double>(PreferenceKeys.consumedAmount, 0.0);
         _consumedRepo.updateStream(DoubleModel(data: 0.0));
       }
+
       timeBloc.updateTime(_consumedRepo.getPreference<String>(PreferenceKeys.time));
     }
   }

@@ -146,9 +146,7 @@ class HomePage extends StatelessWidget {
                                       builder: (BuildContext context) {
                                         return RadioDialog('How long do you want to extend the reminder?',
                                             '5 Minutes', ['5 Minutes', '10 Minutes', '15 Minutes'],
-                                            onRadioSelected: (String selectedRadio) {
-
-                                            });
+                                            onRadioSelected: (String selectedRadio) {});
                                       });
                                 },
                                 color: Theme.of(context).buttonColor,
