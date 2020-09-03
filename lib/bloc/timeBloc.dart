@@ -1,3 +1,4 @@
+import 'package:Nutracker/core/mixins/validator_mixin.dart';
 import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import '../core/mixins/notification.dart';
 import '../models/string.dart';
@@ -11,6 +12,10 @@ class TimeBloc extends Disposable with NotificationMixin {
 
   Stream<String> get timeStream => _timeRepo.getStream<String>((value) => value);
 
+  void updateTime(String time) {
+    _timeRepo.updateStream(StringModel(data: time));
+  }
+
   String getTimeGroupValue(String value) {
     return value == null ? _timeRepo.getPreference<String>(PreferenceKeys.time) : value;
   }
@@ -21,24 +26,17 @@ class TimeBloc extends Disposable with NotificationMixin {
   }
 
   int getCountDownTime(String data) {
-    return data == null ? mapTimeString(_timeRepo.getPreference<String>(PreferenceKeys.time)) : mapTimeString(data);
+    return data == null
+        ? mapTimeString(_timeRepo.getPreference<String>(PreferenceKeys.time))
+        : mapTimeString(data);
   }
 
   int mapTimeString(String data) {
-    if (data == '20 Minutes')
-      return 20;
-    else if (data == '40 Minutes')
-      return 40;
-    else if (data == '60 Minutes')
-      return 60;
-    else if (data == '90 Minutes')
-      return 90;
-    else if (data == '2 Hours')
-      return 120;
-    else if (data == '3 Hours')
-      return 180;
+    List<String> split = data.split(' ');
+    if (split[1] == 'Minutes')
+      return int.parse(split[0]);
     else
-      return 240;
+      return int.parse(split[0]) * 60;
   }
 
   void onTimerDone() async {

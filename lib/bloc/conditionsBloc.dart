@@ -14,9 +14,7 @@ import '../dataSource/conditions/mealFluidDataSource.dart';
 import '../dataSource/conditions/otherDrinkDataSource.dart';
 import '../dataSource/conditions/weightDataSource.dart';
 import 'package:get_it/get_it.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'dart:math';
-import 'package:flutter/material.dart';
 import 'timeBloc.dart';
 import 'notificationBloc.dart';
 
@@ -45,6 +43,9 @@ class ConditionsBloc extends Disposable {
   Stream<String> get exerciseLengthStream => _exerciseLengthRepo.getStream<String>((value) => value);
 
   Stream<double> get consumedStream => _consumedRepo.getStream<double>((value) => value);
+
+  TimeBloc timeBloc = TimeBloc();
+  NotificationBloc notificationBloc = NotificationBloc();
 
   String getAge(String age) {
     return age == null ? _ageRepo.getPreference<String>(PreferenceKeys.age) : age;
@@ -241,8 +242,8 @@ class ConditionsBloc extends Disposable {
 
   String getUnitAmount() {
     return roundDouble(
-            ((remainingAmount(null) * TimeBloc().getCountDownTime(null)) /
-                NotificationBloc().getRemainingTime()),
+            ((remainingAmount(null) * timeBloc.getCountDownTime(null)) / //TODO check for an alternative
+                notificationBloc.getRemainingTime()),
             2)
         .toString();
   }
@@ -265,6 +266,23 @@ class ConditionsBloc extends Disposable {
       audioPlayer.play('Water.mp3');
     }
 
+    if (!hasTime()) {
+      timeBloc.updateTime(
+          '${notificationBloc.getRemainingTime() + notificationBloc.getSleepingTimeRange()} Minutes');
+      // TODO Record on Database the Consumed and remaining Amount
+      _consumedRepo.updateStream(DoubleModel(data: 0.0));
+    } else {
+      if (remainingAmount(null) == 0.0) {
+        //TODO Display a message showing that they have completed the Day
+        _consumedRepo.updateStream(DoubleModel(data: 0.0));
+      }
+      timeBloc.updateTime(_consumedRepo.getPreference<String>(PreferenceKeys.time));
+    }
+  }
+
+  bool hasTime() {
+    return notificationBloc.getRemainingTime() >
+        timeBloc.mapTimeString(_consumedRepo.getPreference<String>(PreferenceKeys.time));
   }
 
   @override

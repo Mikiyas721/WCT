@@ -141,6 +141,15 @@ class NotificationBloc extends Disposable {
     if (hourDifference < 0) hourDifference += 24;
     return minuteDifference + (hourDifference * 60);
   }
+  int getSleepingTimeRange(){
+    DateTime toBed = mapTime(getTimeString()[0]);
+    DateTime fromBed = mapTime(getTimeString()[1]);
+    int minuteDifference = toBed.minute - fromBed.minute;
+    int hourDifference = toBed.hour - fromBed.hour;
+    if (minuteDifference < 0) minuteDifference += 60;
+    if (hourDifference < 0) hourDifference += 24;
+    return minuteDifference + (hourDifference * 60);
+  }
 
   IconData getNotificationIcon(String snapShot) {
     if (alarmGroupValue(snapShot) == "Silent")
@@ -154,11 +163,14 @@ class NotificationBloc extends Disposable {
   }
 
   String getTimeInMeridian(DateTime dateTime) {
+    print(dateTime.hour);
     int hour = dateTime.hour;
     if (hour == 0)
       return '${12}:${dateTime.minute}-AM';
-    else if (hour <= 12)
+    else if (hour < 12)
       return '$hour:${dateTime.minute}-AM';
+    else if(hour ==12)
+      return '$hour:${dateTime.minute}-PM';
     else
       return '${hour - 12}:${dateTime.minute}-PM';
   }

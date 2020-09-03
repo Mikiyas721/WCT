@@ -5,7 +5,7 @@ class RadioDialog extends StatefulWidget {
   final _RadioDialogState radioDialogState;
 
   RadioDialog(String title, String groupValue, List<String> options,
-      {ValueChanged<String> onRadioSelected})
+      {@required ValueChanged<String> onRadioSelected})
       : radioDialogState = _RadioDialogState(
             title: title,
             options: options,

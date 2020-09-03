@@ -1,6 +1,6 @@
 import 'package:Nutracker/ui/customWidgets/numberPickerDialog.dart';
+import 'package:Nutracker/ui/customWidgets/radioDialog.dart';
 import 'package:numberpicker/numberpicker.dart';
-
 import '../../bloc/timeBloc.dart';
 import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:slide_countdown_clock/slide_countdown_clock.dart';
@@ -41,7 +41,7 @@ class HomePage extends StatelessWidget {
               return Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
                 CustomPaint(
                   painter: cup,
-                  size: Size(160, 620),
+                  size: Size(150, 620),
                 ),
                 Card(
                     color: Theme.of(context).primaryColorLight,
@@ -111,35 +111,57 @@ class HomePage extends StatelessWidget {
                                         ],
                                       ),
                                       Text(
-                                        'Amount : ${bloc.getUnitAmount()} Ls',
+                                        'Amount : ${bloc.getUnitAmount()} Ls\n',
                                         style: TextStyle(fontStyle: FontStyle.italic),
                                       ),
                                     ]);
                               }),
-                          FlatButton(
-                            child: Text('Drink'),
-                            onPressed: () {
-                              showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    int cupCount = 1;
-                                    return MyNumberPickerDialog(
-                                        'How many cups did you drink?', 1, bloc.getUnitAmountInCups(), 1, 4,
-                                        (num selectedValue) {
-                                      cupCount = selectedValue;
-                                    }, () {
-                                      bloc.onDrinkConfirmed(cupCount);
-                                      Navigator.pop(context);
-                                    });
-                                  });
-                            },
-                            color: Theme.of(context).buttonColor,
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              FlatButton(
+                                child: Text('Drink'),
+                                onPressed: () {
+                                  showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        int cupCount = 1;
+                                        return MyNumberPickerDialog('How many cups did you drink?', 1,
+                                            bloc.getUnitAmountInCups(), 1, 4, (num selectedValue) {
+                                          cupCount = selectedValue;
+                                        }, () {
+                                          bloc.onDrinkConfirmed(cupCount);
+                                          Navigator.pop(context);
+                                        });
+                                      });
+                                },
+                                color: Theme.of(context).buttonColor,
+                              ),
+                              Padding(padding: EdgeInsets.only(left: 5)),
+                              FlatButton(
+                                child: Text('Extend'),
+                                onPressed: () {
+                                  showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return RadioDialog('How long do you want to extend the reminder?',
+                                            '5 Minutes', ['5 Minutes', '10 Minutes', '15 Minutes'],
+                                            onRadioSelected: (String selectedRadio) {
+
+                                            });
+                                      });
+                                },
+                                color: Theme.of(context).buttonColor,
+                              )
+                            ],
                           ),
-                          FlatButton(
-                            onPressed: bloc.onStopAlarm,
-                            child: Text('Stop Alarm'),
-                            color: Theme.of(context).buttonColor,
-                          ),
+                          Padding(
+                              padding: EdgeInsets.only(left: 40),
+                              child: FlatButton(
+                                onPressed: bloc.onStopAlarm,
+                                child: Text('Stop Alarm'),
+                                color: Theme.of(context).buttonColor,
+                              )),
                         ],
                       ),
                     )),

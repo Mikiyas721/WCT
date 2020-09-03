@@ -39,10 +39,9 @@ setUpDefaults() {
   themeRepo.setPreference<bool>(PreferenceKeys.popupNotification, false);
   themeRepo.setPreference<String>(PreferenceKeys.alarm, 'Sound');
   themeRepo.setPreference<String>(PreferenceKeys.time, '2 Hours');
-  themeRepo.setPreference<String>(PreferenceKeys.sleepingTime, true);
+  themeRepo.setPreference<String>(PreferenceKeys.sleepingTime, '10:00-PM|06:00AM');
   themeRepo.setPreference<bool>(PreferenceKeys.is24, false);
   themeRepo.setPreference<bool>(PreferenceKeys.isDefaultSet, true);
-  //TODO refactor the DataTypes of some of the attributes
 }
 
 class MyApp extends StatelessWidget {
