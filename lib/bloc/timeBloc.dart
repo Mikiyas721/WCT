@@ -1,13 +1,14 @@
 import 'package:Nutracker/core/mixins/validator_mixin.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
-import '../core/mixins/notification.dart';
+import '../core/mixins/notificationHandler.dart';
 import '../models/string.dart';
 import '../resources/preferenceKeys.dart';
 import 'package:get_it/get_it.dart';
 import '../dataSource/notification/timeDataSource.dart';
 import '../core/utils/disposable.dart';
 
-class TimeBloc extends Disposable with NotificationMixin {
+class TimeBloc extends Disposable {
   TimeRepo _timeRepo = GetIt.instance.get();
 
   Stream<String> get timeStream => _timeRepo.getStream<String>((value) => value);
@@ -39,10 +40,10 @@ class TimeBloc extends Disposable with NotificationMixin {
       return int.parse(split[0]) * 60;
   }
 
-  void onTimerDone() async {
+  void onTimerDone(BuildContext context) async {
     bool isDisabled = _timeRepo.getPreference<bool>(PreferenceKeys.isNotificationDisabled);
     if (!isDisabled) {
-      if (_timeRepo.getPreference<bool>(PreferenceKeys.notify)) notification();
+      if (_timeRepo.getPreference<bool>(PreferenceKeys.notify)) NotificationHandler(context: context).notify();
       String alarm = _timeRepo.getPreference<String>(PreferenceKeys.alarm);
       if (alarm == 'Vibrate') {
         // TODO Add code for vibration

@@ -1,3 +1,5 @@
+import 'package:Nutracker/core/mixins/date_formatter.dart';
+
 import '../dataSource/notification/24DataSource.dart';
 import 'package:flutter/material.dart';
 import '../models/string.dart';
@@ -12,7 +14,7 @@ import 'package:get_it/get_it.dart';
 import '../dataSource/notification/disableNotificationDataSource.dart';
 import '../core/utils/disposable.dart';
 
-class NotificationBloc extends Disposable {
+class NotificationBloc extends Disposable with FormatterMixin{
   DisableNotificationRepo _disableNotificationRepo = GetIt.instance.get();
   NowExercisingRepo _nowExercisingRepo = GetIt.instance.get();
   NotificationRepo _notificationRepo = GetIt.instance.get();
@@ -160,31 +162,6 @@ class NotificationBloc extends Disposable {
       return Icons.volume_up;
     else
       return Icons.notifications;
-  }
-
-  String getTimeInMeridian(DateTime dateTime) {
-    print(dateTime.hour);
-    int hour = dateTime.hour;
-    if (hour == 0)
-      return '${12}:${dateTime.minute}-AM';
-    else if (hour < 12)
-      return '$hour:${dateTime.minute}-AM';
-    else if(hour ==12)
-      return '$hour:${dateTime.minute}-PM';
-    else
-      return '${hour - 12}:${dateTime.minute}-PM';
-  }
-
-  DateTime mapTime(String timeString) {
-    List<String> initial = timeString.split('-');
-    List<String> time = initial[0].split(':');
-    final now = DateTime.now();
-    if (time[0] == '0' || time[0] == '12')
-      return DateTime(now.year, now.month, now.day, 12, int.parse(time[1]));
-    else if (initial[1] == 'AM') {
-      return DateTime(now.year, now.month, now.day, int.parse(time[0]), int.parse(time[1]));
-    }
-    return DateTime(now.year, now.month, now.day, int.parse(time[0]) - 12, int.parse(time[1]));
   }
 
   @override

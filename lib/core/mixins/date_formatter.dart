@@ -178,5 +178,29 @@ mixin FormatterMixin {
     return DateTime(int.parse(date[0]), int.parse(date[1]), int.parse(date[2]),
         int.parse(time[0]), int.parse(time[1]), int.parse(second[0]));
   }
+  String getTimeInMeridian(DateTime dateTime) {
+    print(dateTime.hour);
+    int hour = dateTime.hour;
+    if (hour == 0)
+      return '${12}:${dateTime.minute}-AM';
+    else if (hour < 12)
+      return '$hour:${dateTime.minute}-AM';
+    else if(hour ==12)
+      return '$hour:${dateTime.minute}-PM';
+    else
+      return '${hour - 12}:${dateTime.minute}-PM';
+  }
+
+  DateTime mapTime(String timeString) {
+    List<String> initial = timeString.split('-');
+    List<String> time = initial[0].split(':');
+    final now = DateTime.now();
+    if (time[0] == '0' || time[0] == '12')
+      return DateTime(now.year, now.month, now.day, 12, int.parse(time[1]));
+    else if (initial[1] == 'AM') {
+      return DateTime(now.year, now.month, now.day, int.parse(time[0]), int.parse(time[1]));
+    }
+    return DateTime(now.year, now.month, now.day, int.parse(time[0]) - 12, int.parse(time[1]));
+  }
 
 }

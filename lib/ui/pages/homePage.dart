@@ -103,7 +103,9 @@ class HomePage extends StatelessWidget {
                                                     return SlideCountdownClock(
                                                       duration: Duration(
                                                           seconds: bloc.getCountDownTime(snapshot.data)),
-                                                      onDone: bloc.onTimerDone,
+                                                      onDone: (){
+                                                        bloc.onTimerDone(context);
+                                                      },
                                                       separator: ':',
                                                       textStyle: TextStyle(
                                                         fontSize: 18,
