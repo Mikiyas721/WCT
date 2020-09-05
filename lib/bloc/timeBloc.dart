@@ -27,7 +27,7 @@ class TimeBloc extends Disposable {
   }
 
   int getCountDownTime(String data) {
-    return data == null
+    return  data == null
         ? mapTimeString(_timeRepo.getPreference<String>(PreferenceKeys.time))
         : mapTimeString(data);
   }

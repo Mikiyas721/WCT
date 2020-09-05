@@ -217,7 +217,7 @@ class ConditionsBloc extends Disposable {
   double roundDouble(double value, int places) {
     double mod = pow(10.0, places);
     double number = ((value * mod).round().toDouble() / mod);
-    return ((number / 0.25).round()) * 0.25; //Multiple of a cup
+    return ((number / 0.25).ceil()) * 0.25; //Multiple of a cup
   }
 
   bool isNowExercising() {
@@ -241,11 +241,9 @@ class ConditionsBloc extends Disposable {
   }
 
   String getUnitAmount() {
-    return roundDouble(
-        ((double.parse(fetchRecommended()) * timeBloc.getCountDownTime(null)) / //TODO check for an alternative
-                (1440 - notificationBloc.getSleepingTimeRange())),
-            2)
-        .toString();
+    return roundDouble (((double.parse(fetchRecommended()) *
+            timeBloc.getCountDownTime(null)) / //TODO check for an alternative
+        (1440 - notificationBloc.getSleepingTimeRange())),2).toString();
   }
 
   int getUnitAmountInCups() {
@@ -282,7 +280,6 @@ class ConditionsBloc extends Disposable {
         _consumedRepo.setPreference<double>(PreferenceKeys.consumedAmount, 0.0);
         _consumedRepo.updateStream(DoubleModel(data: 0.0));
       }
-
       timeBloc.updateTime(_consumedRepo.getPreference<String>(PreferenceKeys.time));
     }
   }

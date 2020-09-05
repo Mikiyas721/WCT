@@ -146,10 +146,10 @@ class NotificationBloc extends Disposable with FormatterMixin{
   int getSleepingTimeRange(){
     DateTime toBed = mapTime(getTimeString()[0]);
     DateTime fromBed = mapTime(getTimeString()[1]);
-    int minuteDifference = toBed.minute - fromBed.minute;
-    int hourDifference = toBed.hour - fromBed.hour;
+    int minuteDifference = fromBed.minute - toBed.minute;
+    int hourDifference = fromBed.hour - toBed.hour;
     if (minuteDifference < 0) minuteDifference += 60;
-    if (hourDifference < 0) hourDifference += 24;
+    if (hourDifference < 0) hourDifference += 12;
     return minuteDifference + (hourDifference * 60);
   }
 
