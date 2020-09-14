@@ -30,19 +30,18 @@ class WaterSettingsTab extends StatelessWidget {
                   return MyRadioDialogTile(
                       leadingIcon: Icons.timer,
                       title: 'Time',
-                      options: [
-                        'auto',
-                        '60 Minutes',
-                        '90 Minutes',
-                        '2 Hours',
-                        '3 Hours',
-                        '4 Hours'
-                      ],
+                      options: ['auto', '60 Minutes', '90 Minutes', '2 Hours', '3 Hours', '4 Hours'],
                       groupValue: bloc.getTimeGroupValue(snapshot.data),
                       trailing: bloc.getTimeGroupValue(snapshot.data),
                       onRadioSelected: bloc.onTimeChanged);
                 },
               );
+            }),
+        MySettingItem(
+            leadingIcon: Icons.data_usage,
+            title: 'Drink Statistics',
+            onTap: () {
+              Navigator.pushNamed(context, '/statPage');
             }),
       ]).toList(),
     );

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:Nutracker/dataSource/notification/timeDataSource.dart';
 import 'package:audioplayers/audio_cache.dart';
 import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import '../dataSource/conditions/consumedDataSource.dart';
@@ -27,6 +28,7 @@ class ConditionsBloc extends Disposable {
   ConsumedRepo _consumedRepo = GetIt.instance.get();
   ExerciseTypeRepo _exerciseTypeRepo = GetIt.instance.get();
   ExerciseLengthRepo _exerciseLengthRepo = GetIt.instance.get();
+  TimeRepo _timeRepo = GetIt.instance.get();
 
   Stream<String> get ageStream => _ageRepo.getStream<String>((value) => value);
 
@@ -44,9 +46,8 @@ class ConditionsBloc extends Disposable {
 
   Stream<double> get consumedStream => _consumedRepo.getStream<double>((value) => value);
 
-  TimeBloc timeBloc = TimeBloc();
   NotificationBloc notificationBloc = NotificationBloc();
-
+  TimeBloc timeBloc = TimeBloc();
   String getAge(String age) {
     return age == null ? _ageRepo.getPreference<String>(PreferenceKeys.age) : age;
   }
@@ -241,9 +242,12 @@ class ConditionsBloc extends Disposable {
   }
 
   String getUnitAmount() {
-    return roundDouble (((double.parse(fetchRecommended()) *
-            timeBloc.getCountDownTime(null)) / //TODO check for an alternative
-        (1440 - notificationBloc.getSleepingTimeRange())),2).toString();
+    return roundDouble(
+            ((double.parse(fetchRecommended()) *
+                    timeBloc.getCountDownTime(null)) / //TODO check for an alternative
+                (1440 - notificationBloc.getSleepingTimeRange())),
+            2)
+        .toString();
   }
 
   int getUnitAmountInCups() {
@@ -268,25 +272,20 @@ class ConditionsBloc extends Disposable {
     }
 
     if (!hasTime()) {
-      print("hasn't time");
-      timeBloc.updateTime(
-          '${notificationBloc.getRemainingTime() + notificationBloc.getSleepingTimeRange()} Minutes');
       // TODO Record on Database the Consumed and remaining Amount
       _consumedRepo.updateStream(DoubleModel(data: 0.0));
     } else {
       if (remainingAmount(null) <= 0.0) {
         //TODO Display a message showing that they have completed the Day
-        print("has time");
         _consumedRepo.setPreference<double>(PreferenceKeys.consumedAmount, 0.0);
         _consumedRepo.updateStream(DoubleModel(data: 0.0));
       }
-      timeBloc.updateTime(_consumedRepo.getPreference<String>(PreferenceKeys.time));
+      _timeRepo.updateStream(StringModel(data: _consumedRepo.getPreference<String>(PreferenceKeys.time)));
     }
   }
 
   bool hasTime() {
-    return notificationBloc.getRemainingTime() >
-        timeBloc.mapTimeString(_consumedRepo.getPreference<String>(PreferenceKeys.time));
+    return true;
   }
 
   @override

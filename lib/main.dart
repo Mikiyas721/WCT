@@ -1,3 +1,4 @@
+import 'package:Nutracker/ui/pages/settings/water/statPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:get_it/get_it.dart';
@@ -15,6 +16,7 @@ import 'models/theme.dart';
 import 'resources/preferenceKeys.dart';
 
 final themeRepo = GetIt.instance.get<ThemeRepo>();
+
 void main() async {
   //debugPaintSizeEnabled = true;
   WidgetsFlutterBinding.ensureInitialized();
@@ -51,6 +53,7 @@ class MyApp extends StatelessWidget {
     '/notificationPage': (BuildContext context) => NotificationPage(),
     '/conditionsPage': (BuildContext context) => ConditionsPage(),
     '/themePage': (BuildContext context) => ThemePage(),
+    '/statPage': (BuildContext context) => StatPage()
   };
 
   @override
@@ -61,7 +64,10 @@ class MyApp extends StatelessWidget {
       stream: themeRepo.themeDataStream,
       builder: (BuildContext context, AsyncSnapshot<ThemeData> snapshot) {
         return MaterialApp(
-            title: 'Nutrition Tracker', routes: routes, initialRoute: '/', theme: snapshot.data == null ? MyThemeData.defaultLight : snapshot.data);
+            title: 'Nutrition Tracker',
+            routes: routes,
+            initialRoute: '/',
+            theme: snapshot.data == null ? MyThemeData.defaultLight : snapshot.data);
       },
     );
   }

@@ -132,6 +132,7 @@ class HomePage extends StatelessWidget {
                                       context: context,
                                       builder: (BuildContext context) {
                                         int cupCount = 1;
+
                                         return MyNumberPickerDialog('How many cups did you drink?', 1,
                                             bloc.getUnitAmountInCups(), 1, 4, (num selectedValue) {
                                           cupCount = selectedValue;
